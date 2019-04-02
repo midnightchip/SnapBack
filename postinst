@@ -1,0 +1,13 @@
+#!/bin/bash
+echo "Killing SnapBack..."
+killall SnapBack
+wait
+echo "Setting SnapBack binary ownership..."
+echo ""
+chown 0:0 /Applications/SnapBack.app
+chown 0:0 /Applications/SnapBack.app/SnapBack
+chmod +s /Applications/SnapBack.app/SnapBack
+echo "Refreshing ui cache..."
+echo ""
+su -c uicache mobile
+

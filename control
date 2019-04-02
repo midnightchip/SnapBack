@@ -1,0 +1,10 @@
+Architecture: iphoneos-arm
+Depends: firmware (>= 11.0)
+Author: MidnightChips
+Description: iOS Time Machine
+Maintainer: MidnightChips
+Name: SnapBack
+Package: me.midnightchips.snapback
+Section: Application
+Version: 1.0
+

@@ -1,0 +1,6 @@
+framework module iAmGRoot {
+  umbrella header "iAmGRoot.h"
+
+  export *
+  module * { export * }
+}

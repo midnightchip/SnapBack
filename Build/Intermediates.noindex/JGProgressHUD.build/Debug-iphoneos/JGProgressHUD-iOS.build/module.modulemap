@@ -1,0 +1,6 @@
+framework module JGProgressHUD {
+  umbrella header "JGProgressHUD.h"
+
+  export *
+  module * { export * }
+}

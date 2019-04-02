@@ -1,0 +1,491 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3684721C225269D300D04199 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3684721B225269D300D04199 /* AppDelegate.m */; };
+		3684721F225269D300D04199 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3684721E225269D300D04199 /* ViewController.m */; };
+		36847222225269D300D04199 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 36847220225269D300D04199 /* Main.storyboard */; };
+		36847224225269D500D04199 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36847223225269D500D04199 /* Assets.xcassets */; };
+		36847227225269D500D04199 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 36847225225269D500D04199 /* LaunchScreen.storyboard */; };
+		3684722A225269D500D04199 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 36847229225269D500D04199 /* main.m */; };
+		3684723122526C0300D04199 /* iAmGRoot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3684723022526C0300D04199 /* iAmGRoot.framework */; };
+		368472362252701C00D04199 /* IOKit in Frameworks */ = {isa = PBXBuildFile; fileRef = 368472332252701C00D04199 /* IOKit */; };
+		368472372252701C00D04199 /* libsnappy.c in Sources */ = {isa = PBXBuildFile; fileRef = 368472342252701C00D04199 /* libsnappy.c */; };
+		36986C4C2252BF44000B93B5 /* JGProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3658F51F2252BF15001B8E5B /* JGProgressHUD.framework */; };
+		36986C4D2252BF44000B93B5 /* JGProgressHUD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3658F51F2252BF15001B8E5B /* JGProgressHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		36F92C1E22527BE300134F10 /* UIBarButtonItem+blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 36F92C1C22527BE300134F10 /* UIBarButtonItem+blocks.m */; };
+		36F92C212252948400134F10 /* MCCommands.m in Sources */ = {isa = PBXBuildFile; fileRef = 36F92C202252948400134F10 /* MCCommands.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3658F51E2252BF15001B8E5B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3658F5192252BF15001B8E5B /* JGProgressHUD.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6BF7DC5A1AEFCFD9000A0AE0;
+			remoteInfo = "JGProgressHUD-iOS";
+		};
+		3658F5202252BF15001B8E5B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3658F5192252BF15001B8E5B /* JGProgressHUD.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6BABF9A31F7A6133005E783F;
+			remoteInfo = "JGProgressHUD-tvOS";
+		};
+		36986C4E2252BF44000B93B5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3658F5192252BF15001B8E5B /* JGProgressHUD.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 6BF7DC591AEFCFD9000A0AE0;
+			remoteInfo = "JGProgressHUD-iOS";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		36F92C2F2252964A00134F10 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				36986C4D2252BF44000B93B5 /* JGProgressHUD.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		3658F5192252BF15001B8E5B /* JGProgressHUD.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JGProgressHUD.xcodeproj; path = ../JGProgressHUD/JGProgressHUD.xcodeproj; sourceTree = "<group>"; };
+		36847217225269D300D04199 /* SnapBack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SnapBack.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3684721A225269D300D04199 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		3684721B225269D300D04199 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		3684721D225269D300D04199 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		3684721E225269D300D04199 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		36847221225269D300D04199 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		36847223225269D500D04199 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		36847226225269D500D04199 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		36847228225269D500D04199 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		36847229225269D500D04199 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		3684723022526C0300D04199 /* iAmGRoot.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = iAmGRoot.framework; sourceTree = "<group>"; };
+		368472332252701C00D04199 /* IOKit */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = IOKit; sourceTree = "<group>"; };
+		368472342252701C00D04199 /* libsnappy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = libsnappy.c; sourceTree = "<group>"; };
+		368472352252701C00D04199 /* snappy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = snappy.h; sourceTree = "<group>"; };
+		36F92C1C22527BE300134F10 /* UIBarButtonItem+blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+blocks.m"; sourceTree = "<group>"; };
+		36F92C1D22527BE300134F10 /* UIBarButtonItem+blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+blocks.h"; sourceTree = "<group>"; };
+		36F92C1F2252948400134F10 /* MCCommands.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCCommands.h; sourceTree = "<group>"; };
+		36F92C202252948400134F10 /* MCCommands.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCCommands.m; sourceTree = "<group>"; };
+		36F92C3022529CDA00134F10 /* NSTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSTask.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		36847214225269D300D04199 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3684723122526C0300D04199 /* iAmGRoot.framework in Frameworks */,
+				368472362252701C00D04199 /* IOKit in Frameworks */,
+				36986C4C2252BF44000B93B5 /* JGProgressHUD.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3658F51A2252BF15001B8E5B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3658F51F2252BF15001B8E5B /* JGProgressHUD.framework */,
+				3658F5212252BF15001B8E5B /* JGProgressHUD.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3684720E225269D300D04199 = {
+			isa = PBXGroup;
+			children = (
+				36847219225269D300D04199 /* SnapBack */,
+				36847218225269D300D04199 /* Products */,
+				3658F5192252BF15001B8E5B /* JGProgressHUD.xcodeproj */,
+			);
+			sourceTree = "<group>";
+		};
+		36847218225269D300D04199 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				36847217225269D300D04199 /* SnapBack.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		36847219225269D300D04199 /* SnapBack */ = {
+			isa = PBXGroup;
+			children = (
+				368472322252701C00D04199 /* Snappy */,
+				36F92C332252B8E100134F10 /* Frameworks */,
+				36F92C3022529CDA00134F10 /* NSTask.h */,
+				36F92C1F2252948400134F10 /* MCCommands.h */,
+				36F92C202252948400134F10 /* MCCommands.m */,
+				36F92C1D22527BE300134F10 /* UIBarButtonItem+blocks.h */,
+				36F92C1C22527BE300134F10 /* UIBarButtonItem+blocks.m */,
+				3684721A225269D300D04199 /* AppDelegate.h */,
+				3684721B225269D300D04199 /* AppDelegate.m */,
+				3684721D225269D300D04199 /* ViewController.h */,
+				3684721E225269D300D04199 /* ViewController.m */,
+				36847220225269D300D04199 /* Main.storyboard */,
+				36847223225269D500D04199 /* Assets.xcassets */,
+				36847225225269D500D04199 /* LaunchScreen.storyboard */,
+				36847228225269D500D04199 /* Info.plist */,
+				36847229225269D500D04199 /* main.m */,
+			);
+			path = SnapBack;
+			sourceTree = "<group>";
+		};
+		368472322252701C00D04199 /* Snappy */ = {
+			isa = PBXGroup;
+			children = (
+				368472332252701C00D04199 /* IOKit */,
+				368472342252701C00D04199 /* libsnappy.c */,
+				368472352252701C00D04199 /* snappy.h */,
+			);
+			path = Snappy;
+			sourceTree = "<group>";
+		};
+		36F92C332252B8E100134F10 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3684723022526C0300D04199 /* iAmGRoot.framework */,
+			);
+			path = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		36847216225269D300D04199 /* SnapBack */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3684722D225269D500D04199 /* Build configuration list for PBXNativeTarget "SnapBack" */;
+			buildPhases = (
+				36847213225269D300D04199 /* Sources */,
+				36847214225269D300D04199 /* Frameworks */,
+				36847215225269D300D04199 /* Resources */,
+				36F92C2F2252964A00134F10 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				36986C4F2252BF44000B93B5 /* PBXTargetDependency */,
+			);
+			name = SnapBack;
+			productName = SnapBack;
+			productReference = 36847217225269D300D04199 /* SnapBack.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3684720F225269D300D04199 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0940;
+				ORGANIZATIONNAME = midnightchips;
+				TargetAttributes = {
+					36847216225269D300D04199 = {
+						CreatedOnToolsVersion = 9.4;
+					};
+				};
+			};
+			buildConfigurationList = 36847212225269D300D04199 /* Build configuration list for PBXProject "SnapBack" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 3684720E225269D300D04199;
+			productRefGroup = 36847218225269D300D04199 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 3658F51A2252BF15001B8E5B /* Products */;
+					ProjectRef = 3658F5192252BF15001B8E5B /* JGProgressHUD.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				36847216225269D300D04199 /* SnapBack */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		3658F51F2252BF15001B8E5B /* JGProgressHUD.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = JGProgressHUD.framework;
+			remoteRef = 3658F51E2252BF15001B8E5B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3658F5212252BF15001B8E5B /* JGProgressHUD.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = JGProgressHUD.framework;
+			remoteRef = 3658F5202252BF15001B8E5B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		36847215225269D300D04199 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				36847227225269D500D04199 /* LaunchScreen.storyboard in Resources */,
+				36847224225269D500D04199 /* Assets.xcassets in Resources */,
+				36847222225269D300D04199 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		36847213225269D300D04199 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3684721F225269D300D04199 /* ViewController.m in Sources */,
+				3684722A225269D500D04199 /* main.m in Sources */,
+				36F92C1E22527BE300134F10 /* UIBarButtonItem+blocks.m in Sources */,
+				368472372252701C00D04199 /* libsnappy.c in Sources */,
+				3684721C225269D300D04199 /* AppDelegate.m in Sources */,
+				36F92C212252948400134F10 /* MCCommands.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		36986C4F2252BF44000B93B5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "JGProgressHUD-iOS";
+			targetProxy = 36986C4E2252BF44000B93B5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		36847220225269D300D04199 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				36847221225269D300D04199 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		36847225225269D500D04199 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				36847226225269D500D04199 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		3684722B225269D500D04199 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		3684722C225269D500D04199 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3684722E225269D500D04199 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9F3ED5X4UJ;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/**",
+					"\"$(SRCROOT)/../JGProgressHUD/JGProgressHUD.xcodeproj\"/**",
+					"$(PROJECT_DIR)/SnapBack/Snappy",
+				);
+				INFOPLIST_FILE = SnapBack/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SnapBack/Snappy",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.midnightchips.SnapBack;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3684722F225269D500D04199 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9F3ED5X4UJ;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/**",
+					"\"$(SRCROOT)/../JGProgressHUD/JGProgressHUD.xcodeproj\"/**",
+					"$(PROJECT_DIR)/SnapBack/Snappy",
+				);
+				INFOPLIST_FILE = SnapBack/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SnapBack/Snappy",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.midnightchips.SnapBack;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		36847212225269D300D04199 /* Build configuration list for PBXProject "SnapBack" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3684722B225269D500D04199 /* Debug */,
+				3684722C225269D500D04199 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3684722D225269D500D04199 /* Build configuration list for PBXNativeTarget "SnapBack" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3684722E225269D500D04199 /* Debug */,
+				3684722F225269D500D04199 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3684720F225269D300D04199 /* Project object */;
+}
