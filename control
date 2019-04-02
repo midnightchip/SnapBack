@@ -7,4 +7,4 @@ Name: SnapBack
 Package: me.midnightchips.snapback
 Section: Application
 Version: 1.0
-
+Depends: rsync
