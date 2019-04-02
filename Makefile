@@ -14,7 +14,7 @@ stage:
 	mkdir -p build/latest/DEBIAN/
 	cp -R ./control build/latest/DEBIAN/
 	cp -R ./postinst build/latest/DEBIAN/
-	cp -R build/Products/Debug-iphoneos/$(TARGET).app build/latest/Applications/
+	cp -R build/Debug-iphoneos/$(TARGET).app build/latest/Applications/
 	#cp -R ./Installer.db build/latest/var/tmp/
 	ldid -Sent.plist build/latest/Applications/$(TARGET).app/$(TARGET)
 

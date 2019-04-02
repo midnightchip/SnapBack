@@ -280,7 +280,7 @@ bool ensure_directory(const char *directory, int owner, mode_t mode) {
     }
 }
 -(void)endRsync{
-    self.HUD.textLabel.text = @"Success";
+    self.HUD.textLabel.text = @"Success, If you see this message you need to force reboot.";
     self.HUD.detailTextLabel.text = @"You will now be rebooted";
     self.HUD.indicatorView = [[JGProgressHUDSuccessIndicatorView alloc] init];
     //sleep(3);
