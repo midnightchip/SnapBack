@@ -183,7 +183,7 @@ int waitForFile(const char *filename) {
 - (BOOL)createSnapshotIfNecessary:(NSString *)snapName {
     snapName = [snapName lowercaseString];
     snapName = [snapName stringByReplacingOccurrencesOfString:@" " withString:@"-"];
-    if([snapName isEqualToString:[[NSString alloc] initWithCString:find_stock_snapshot() encoding:NSUTF8StringEncoding]]){
+    if([snapName isEqualToString:[[NSString alloc] initWithCString:find_stock_snapshot encoding:NSUTF8StringEncoding]]){
         return FALSE;
     }
     bool success     = false;
@@ -308,7 +308,7 @@ int waitForFile(const char *filename) {
     self.HUD.indicatorView = [[JGProgressHUDSuccessIndicatorView alloc] init];
     //sleep(3);
     [Authorized authorizeAsRoot];
-    reboot(0x400)
+    reboot(0x400);
     sleep(2);
     kill(1, SIGTERM);
     [Authorized restore];
@@ -364,7 +364,7 @@ int waitForFile(const char *filename) {
                                                          }];
     
     [optionAlert addAction:snapAction];
-    if(![cell.textLabel.text isEqualToString:[[NSString alloc] initWithCString:find_stock_snapshot() encoding:NSUTF8StringEncoding]]]){
+    if(![cell.textLabel.text isEqualToString:[[NSString alloc] initWithCString:find_stock_snapshot encoding:NSUTF8StringEncoding]]]){
         [optionAlert addAction:deleteAction];
     }
     [optionAlert addAction:cancelAction];
