@@ -76,6 +76,28 @@ bool ensure_directory(const char *directory, int owner, mode_t mode) {
                                                                                        } error:nil];
 }
 
+const char *find_stock_snapshot() {
+    int rootfd = open("/", O_RDONLY);
+    if (rootfd <= 0) return NULL;
+    const char **snapshots = snapshot_list(rootfd);
+    if (snapshots == NULL) return NULL;
+    const char *snapshot = *snapshot;
+    close (rootfd);
+    free(snapshots);
+    snapshots = NULL;
+    return snapshot;
+}
+
+int waitForFile(const char *filename) {
+    int rv = 0;
+    rv = access(filename, F_OK);
+    for (int i = 0; !(i >= 100 || rv == ERR_SUCCESS); i++) {
+        usleep(100000);
+        rv = access(filename, F_OK);
+    }
+    return rv;
+}
+
 
 @interface ViewController (){
     NSMutableArray *snapshotArray;
@@ -153,14 +175,15 @@ bool ensure_directory(const char *directory, int owner, mode_t mode) {
                 //}
             }
         }
+        free(snapshots);
+        close(rootfd);
     }
-    close(rootfd);
 }
 
 - (BOOL)createSnapshotIfNecessary:(NSString *)snapName {
     snapName = [snapName lowercaseString];
     snapName = [snapName stringByReplacingOccurrencesOfString:@" " withString:@"-"];
-    if([snapName isEqualToString:@"orig-fs"]){
+    if([snapName isEqualToString:[[NSString alloc] initWithCString:find_stock_snapshot() encoding:NSUTF8StringEncoding]]){
         return FALSE;
     }
     bool success     = false;
@@ -223,7 +246,7 @@ bool ensure_directory(const char *directory, int owner, mode_t mode) {
 -(void)prepSnapshotRysnc:(NSString *)snapName{
     dispatch_async(dispatch_get_main_queue(), ^{
         self.HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
-        self.HUD.textLabel.text = @"Please Wait, Do Not Lock Your Device. \nYour Device Will Shutdown When Done.";
+        self.HUD.textLabel.text = @"Please Wait, Do Not Lock Your Device. \nYour Device Will Reboot When Done.";
         [self.HUD showInView:self.view];
     });
     [self jumpToSnapshotRsync:snapName];
@@ -244,7 +267,7 @@ bool ensure_directory(const char *directory, int owner, mode_t mode) {
         NSString * command = [NSString stringWithFormat:@"/sbin/mount_apfs -s %@ / /var/MobileSoftwareUpdate/mnt1", snapName];
         NSString * output = runCommandGivingResults(command);
         NSLog(@"SNAPBACK OUTPUT %@", output);
-        sleep(10);
+        //sleep(10);
         [self runRsync:snapName];
         [Authorized restore];
         //[self.HUD dismissAnimated:YES];
@@ -285,7 +308,9 @@ bool ensure_directory(const char *directory, int owner, mode_t mode) {
     self.HUD.indicatorView = [[JGProgressHUDSuccessIndicatorView alloc] init];
     //sleep(3);
     [Authorized authorizeAsRoot];
-    runCommandGivingResults(@"/sbin/halt");
+    reboot(0x400)
+    sleep(2);
+    kill(1, SIGTERM);
     [Authorized restore];
 }
 
@@ -339,7 +364,7 @@ bool ensure_directory(const char *directory, int owner, mode_t mode) {
                                                          }];
     
     [optionAlert addAction:snapAction];
-    if(![cell.textLabel.text isEqualToString:@"orig-fs"]){
+    if(![cell.textLabel.text isEqualToString:[[NSString alloc] initWithCString:find_stock_snapshot() encoding:NSUTF8StringEncoding]]]){
         [optionAlert addAction:deleteAction];
     }
     [optionAlert addAction:cancelAction];
