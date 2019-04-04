@@ -183,7 +183,7 @@ int waitForFile(const char *filename) {
 - (BOOL)createSnapshotIfNecessary:(NSString *)snapName {
     snapName = [snapName lowercaseString];
     snapName = [snapName stringByReplacingOccurrencesOfString:@" " withString:@"-"];
-    NSString *origSnap = [NSString stringWithUTF8String:find_stock_snapshot()];
+    NSString *origSnap = [NSString stringWithCString:find_stock_snapshot() encoding:NSUTF8StringEncoding];
     if([snapName isEqualToString:origSnap]){
         return FALSE;
     }
@@ -365,7 +365,7 @@ int waitForFile(const char *filename) {
                                                          }];
     
     [optionAlert addAction:snapAction];
-    NSString *origSnap = [NSString stringWithUTF8String:find_stock_snapshot()];
+    NSString *origSnap = [NSString stringWithCString:find_stock_snapshot() encoding:NSUTF8StringEncoding];
     if(![cell.textLabel.text isEqualToString:origSnap]){
         [optionAlert addAction:deleteAction];
     }
