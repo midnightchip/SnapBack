@@ -81,7 +81,7 @@ const char *find_stock_snapshot() {
     if (rootfd <= 0) return NULL;
     const char **snapshots = snapshot_list(rootfd);
     if (snapshots == NULL) return NULL;
-    const char *snapshot = *snapshot;
+    const char snapshot = *snapshot;
     close (rootfd);
     free(snapshots);
     snapshots = NULL;
