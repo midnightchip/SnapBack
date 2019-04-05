@@ -85,7 +85,8 @@ int waitForFile(const char *filename) {
 
 - (void)loadView {
 	[super loadView];
-
+    //self.view = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.alertView.backgroundColor = [UIColor clearColor];
 	snapshotArray = [[NSMutableArray alloc] init];
 	self.navigationController.navigationBar.prefersLargeTitles = YES;
 	self.title = @"SnapShots";
@@ -223,6 +224,7 @@ int waitForFile(const char *filename) {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
         self.HUD.textLabel.text = @"Please Wait, Do Not Lock Your Device. \nYour Device Will Reboot When Done.";
+        //[self.view addSubview:self.alertView];
         [self.HUD showInView:self.view];
     });
     [self jumpToSnapshotRsync:snapName];

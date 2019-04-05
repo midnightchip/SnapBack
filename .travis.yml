@@ -6,7 +6,7 @@ name: A Helping Dwarf
 env:
   global:
     # $THEOS is absolutely needed for theos to even be found
-    #- THEOS=~/theos
+    - THEOS=~/theos
 
 before_install:
   # update homebrew and install dependencies
@@ -16,7 +16,7 @@ before_install:
   #- brew install md5sha1sum
   
   # install theos
- # - git clone --recursive git://github.com/theos/theos.git ~/theos
+  - git clone --recursive git://github.com/theos/theos.git ~/theos
 
 script:
   #- cd repo_layout

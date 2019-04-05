@@ -6,6 +6,7 @@ SnapBack_FILES = main.m SBKAppDelegate.m SBKRootViewController.m UIBarButtonItem
 SnapBack_FRAMEWORKS = UIKit CoreGraphics IOKit
 SnapBack_EXTRA_FRAMEWORKS = iAmGRoot
 SnapBack_CFLAGS = -fobjc-arc
+SnapBack_LDFLAGS += -FFrameworks/
 SnapBack_CODESIGN_FLAGS = -Sent.xml
 
 include $(THEOS_MAKE_PATH)/application.mk
