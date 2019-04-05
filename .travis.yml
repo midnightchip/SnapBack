@@ -11,6 +11,13 @@ before_install:
 script:
 - make package FINALPACKAGE=1
 
+before_deploy:
+    # Set up git user name and tag this commit
+    - git config --local user.name "MidnightChips"
+    - git config --local user.email "midnightchips@gmail.com"
+    - export TRAVIS_TAG= Alpha $TRAVIS_JOB_NUMBER
+    - git tag $TRAVIS_TAG
+
 deploy:
   provider: releases
   skip_cleanup: true
