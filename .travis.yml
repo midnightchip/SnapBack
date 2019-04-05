@@ -2,30 +2,20 @@ os: osx
 language: objective-c
 sudo: false
 name: A Helping Dwarf
-
 env:
   global:
-    # $THEOS is absolutely needed for theos to even be found
-    - THEOS=~/theos
-
+  - THEOS=~/theos
 before_install:
-  # update homebrew and install dependencies
-  #- brew update
-
-  - brew install ldid
-  #- brew install md5sha1sum
-  
-  # install theos
-  - git clone --recursive git://github.com/theos/theos.git ~/theos
-
+- brew install ldid
+- git clone --recursive git://github.com/theos/theos.git ~/theos
 script:
-  #- cd repo_layout
-  - make
+- make package FINALPACKAGE=1
 
-#deploy:
-  #provider: pages
-  #skip_cleanup: true
-  #github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
-  #target_branch: master
-  #on:
-    #branch: deploy
+deploy:
+  provider: releases
+  api_key:
+    secure: qsbstqc9dRdMEltZtiXxXynmLc3uI7aoqnS3dXpIVLKRM1d2YXWJy0Wez2aaN5Es4gzLHfnlg8Q/hozlAvrDNlCJ2F9XlKeHYYR8v7vcJi/PAsfkDR9RoWgMIc6qzG++wOaOhyXoY5pO9V7cyvg0TJC705b+WExTWKPniiYEzRVJtrHw3vIR7yFy6+LVjr4WEfbiSMwY+4XZn8pscYCUUAGlRBpPwZY4tVCHSWeP6gvEI42xkLLOtTmkCXtrgvXIV8dejyLbcj4heqZJb2pmpU1sAcV/PIspDchddWggVUSEG2QezxQMg+MA+T9flJeDZZQn71h0PKbVc6OlUDffWA8zVoBuOq4u06uT0JLB2+KtEAsbHdswLq50kHJLdz89FD6Yav8tP7WojcStQLVf0y8xTt1Hh9bv1ilH45NyEkDsxRTOQos3m4qUxpSnr5Vr2wsXAWmapHPgFGA/bKcNwirJyjBADop4TkKtZzZKUQPVxWAdrkXsnFF5GyHWNsPUWZyaYduSpmHnc9KPsg4cdXAolfv6mx/5ekq+9nNAfd5YQ1slEef9NWZItxPsP7i2HzTSklSUveDJDDmqOwHQnn+HcxgZVNqRjAFqLPpSpJXuaD360zAV3infONLV5jaYsewUTWAKuedugAsje5fRBMtaZLjUVHXDEnkYAcWPKJE=
+  file: "./packages/me.midnightchips.snapback_1.0_iphoneos-arm.deb"
+  on:
+    repo: midnightchip/SnapBack
+    branch: Theos
