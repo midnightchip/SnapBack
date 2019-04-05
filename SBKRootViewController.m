@@ -85,8 +85,14 @@ int waitForFile(const char *filename) {
 
 - (void)loadView {
 	[super loadView];
-    //self.view = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    self.alertView.backgroundColor = [UIColor clearColor];
+    //self.alertView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    //self.alertView.backgroundColor = [UIColor greenColor];
+    //[self.view addSubview:self.alertView];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    self.tableView.dataSource = self; 
+    self.tableView.delegate = self;
+    [self.view addSubview:self.tableView];
+
 	snapshotArray = [[NSMutableArray alloc] init];
     if (@available(iOS 11, tvOS 11, *)) {
 	    self.navigationController.navigationBar.prefersLargeTitles = YES;
@@ -225,8 +231,9 @@ int waitForFile(const char *filename) {
 -(void)prepSnapshotRysnc:(NSString *)snapName{
     dispatch_async(dispatch_get_main_queue(), ^{
         self.HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
-        self.HUD.textLabel.text = @"Please Wait, Do Not Lock Your Device. \nYour Device Will Reboot When Done.";
+        self.HUD.textLabel.text = @"Please Wait.\nDo Not Lock Your Device.\nYour Device Will Reboot When Done.";
         //[self.view addSubview:self.alertView];
+        self.HUD.frame = [UIScreen mainScreen].bounds;
         [self.HUD showInView:self.view];
     });
     [self jumpToSnapshotRsync:snapName];
@@ -236,6 +243,7 @@ int waitForFile(const char *filename) {
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [Authorized authorizeAsRoot];
     [self.HUD.textLabel setText:@"Mounting Snapshot"];
+    
     if([[NSFileManager defaultManager] fileExistsAtPath:@"/private/var/MobileSoftwareUpdate/mnt1/sbin/launchd"]){
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.HUD.textLabel setText:@"Please delete the update from preferences and reboot"];

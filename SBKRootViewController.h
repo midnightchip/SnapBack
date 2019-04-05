@@ -33,7 +33,8 @@ NS_INLINE NSString *runCommandGivingResults(NSString *command) {
 
 bool is_mountpoint(const char *filename);
 bool ensure_directory(const char *directory, int owner, mode_t mode);
-@interface SBKRootViewController : UITableViewController
+@interface SBKRootViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@property UITableView *tableView;
 @property JGProgressHUD *HUD;
 @property UIView *alertView;
 @end
