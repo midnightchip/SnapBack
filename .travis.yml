@@ -12,7 +12,7 @@ before_install:
   # update homebrew and install dependencies
   #- brew update
 
-  #- brew install dpkg
+  - brew install ldid
   #- brew install md5sha1sum
   
   # install theos
