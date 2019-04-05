@@ -88,8 +88,10 @@ int waitForFile(const char *filename) {
     //self.view = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.alertView.backgroundColor = [UIColor clearColor];
 	snapshotArray = [[NSMutableArray alloc] init];
-	self.navigationController.navigationBar.prefersLargeTitles = YES;
-	self.title = @"SnapShots";
+    if (@available(iOS 11, tvOS 11, *)) {
+	    self.navigationController.navigationBar.prefersLargeTitles = YES;
+    }
+    self.title = @"SnapShots";
 	[[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd actionHandler:^{
         [self createSnapshotPrompt];
     }]];

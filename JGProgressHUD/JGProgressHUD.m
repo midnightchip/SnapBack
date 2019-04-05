@@ -379,8 +379,8 @@ static CGRect keyboardFrame = (CGRect){{0.0, 0.0}, {0.0, 0.0}};
     if (!CGRectIsEmpty(localKeyboardFrame) && CGRectIntersectsRect(frame, localKeyboardFrame)) {
         CGFloat keyboardMinY = CGRectGetMinY(localKeyboardFrame);
         
-        //if (@available(iOS 11, tvOS 11, *)) {
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11.0")){    
+        if (@available(iOS 11, tvOS 11, *)) {
+        //if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11.0")){    
             if (self.insetsLayoutMarginsFromSafeArea) {
                 // This makes sure that the bottom safe area inset is only respected when that area is not covered by the keyboard. When the keyboard covers the bottom area outside of the safe area it is not necessary to keep the bottom safe area insets part of the insets for the HUD.
                 keyboardMinY += self.safeAreaInsets.bottom;
