@@ -9,7 +9,7 @@ before_install:
 - brew install ldid
 - git clone --recursive git://github.com/theos/theos.git ~/theos
 script:
-- make package FINALPACKAGE
+- make package FINALPACKAGE=1
 
 deploy:
   provider: releases
