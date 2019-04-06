@@ -94,9 +94,9 @@ int waitForFile(const char *filename) {
     [self.view addSubview:self.tableView];
 
 	snapshotArray = [[NSMutableArray alloc] init];
-    if (@available(iOS 11, tvOS 11, *)) {
+    //if (@available(iOS 11, tvOS 11, *)) {
 	    self.navigationController.navigationBar.prefersLargeTitles = YES;
-    }
+    //}
     self.title = @"SnapShots";
 	[[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd actionHandler:^{
         [self createSnapshotPrompt];
@@ -231,7 +231,7 @@ int waitForFile(const char *filename) {
 -(void)prepSnapshotRysnc:(NSString *)snapName{
     dispatch_async(dispatch_get_main_queue(), ^{
         self.HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
-        self.HUD.textLabel.text = @"Please Wait.\nDo Not Lock Your Device.\nYour Device Will Reboot When Done.";
+        self.HUD.textLabel.text = @"Please Wait.\nDo Not Close This App.\nDo Not Lock Your Device.\nYour Device Will Reboot When Done.";
         //[self.view addSubview:self.alertView];
         self.HUD.frame = [UIScreen mainScreen].bounds;
         [self.HUD showInView:self.view];
@@ -291,11 +291,12 @@ int waitForFile(const char *filename) {
     }
 }
 -(void)endRsync{
-    self.HUD.textLabel.text = @"Success, If you see this message you need to force reboot.";
+    self.HUD.textLabel.text = @"Success!\nIf you see this message you need to force reboot.";
     self.HUD.detailTextLabel.text = @"You will now be rebooted";
     self.HUD.indicatorView = [[JGProgressHUDSuccessIndicatorView alloc] init];
     //sleep(3);
     [Authorized authorizeAsRoot];
+    //runCommandGivingResults(@"nohup /usr/bin/ldrestart");
     reboot(0x400);
     sleep(2);
     kill(1, SIGTERM);

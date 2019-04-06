@@ -1,4 +1,7 @@
+export ARCHS = arm64
+export TARGET = appletv:clang:10.1:10.1
 GO_EASY_ON_ME = 1
+export SYSROOT = $(THEOS)/sdks/AppleTVOS10.1.sdk
 include $(THEOS)/makefiles/common.mk
 
 APPLICATION_NAME = SnapBack
