@@ -85,6 +85,16 @@ int waitForFile(const char *filename) {
 
 - (void)loadView {
 	[super loadView];
+    NSError * error = nil;
+    [[NSFileManager defaultManager] createDirectoryAtPath:@"/var/MobileSoftwareUpdate/mnt1"
+                          withIntermediateDirectories:YES
+                                           attributes:nil
+                                                error:&error];
+    
+    if (error != nil) {
+    NSLog(@"error creating directory: %@", error);
+    //..
+    }
     //self.alertView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     //self.alertView.backgroundColor = [UIColor greenColor];
     //[self.view addSubview:self.alertView];
@@ -231,6 +241,8 @@ int waitForFile(const char *filename) {
 -(void)prepSnapshotRysnc:(NSString *)snapName{
     dispatch_async(dispatch_get_main_queue(), ^{
         self.HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
+        self.HUD.indicatorView = [[JGProgressHUDRingIndicatorView alloc] init];
+        [self.HUD setProgress:0.0f animated:YES];
         self.HUD.textLabel.text = @"Please Wait.\nDo Not Lock Your Device.\nYour Device Will Reboot When Done.";
         //[self.view addSubview:self.alertView];
         self.HUD.frame = [UIScreen mainScreen].bounds;
@@ -280,7 +292,39 @@ int waitForFile(const char *filename) {
                                                                         NSString *stringRead = [[NSString alloc] initWithData:dataRead encoding:NSUTF8StringEncoding];
                                                                         NSLog(@"SnapBack RSYNC %@", stringRead);
                                                                         [self.HUD.detailTextLabel setText:stringRead];
+                                                                        if ([stringRead hasPrefix:@"Applications/"]) {
+                                                                            if(self.HUD.progress != 0.15f){
+                                                                                dispatch_async(dispatch_get_main_queue(), ^{
+                                                                                    [self.HUD setProgress:0.15f animated:YES];
+                                                                                });
+                                                                            }
+                                                                            
+                                                                        }
+                                                                        if ([stringRead hasPrefix:@"Library/"]) {
+                                                                            if(self.HUD.progress != 0.33f){
+                                                                                dispatch_async(dispatch_get_main_queue(), ^{
+                                                                                    [self.HUD setProgress:0.33f animated:YES];
+                                                                                });
+                                                                            }
+                                                                        }
+                                                                        if ([stringRead hasPrefix:@"System/"]) {
+                                                                            if(self.HUD.progress != 0.67f){
+                                                                                dispatch_async(dispatch_get_main_queue(), ^{
+                                                                                    [self.HUD setProgress:0.67f animated:YES];
+                                                                                });
+                                                                            }
+                                                                        }
+                                                                        if ([stringRead hasPrefix:@"usr/"]) {
+                                                                            if(self.HUD.progress != 0.90f){
+                                                                                dispatch_async(dispatch_get_main_queue(), ^{
+                                                                                    [self.HUD setProgress:0.90f animated:YES];
+                                                                                });
+                                                                            }
+                                                                        }
                                                                         if([stringRead containsString:@"speedup is"]){
+                                                                            dispatch_async(dispatch_get_main_queue(), ^{
+                                                                                [self.HUD setProgress:1.0f animated:YES];
+                                                                            });
                                                                             [self endRsync];
                                                                         }
                                                                         [stdoutHandle waitForDataInBackgroundAndNotify];
@@ -321,7 +365,6 @@ int waitForFile(const char *filename) {
 	return [NSString stringWithCString:snapshot encoding:NSUTF8StringEncoding];
     [Authorized restore];
 }
-
 
 
 - (void)addButtonTapped:(id)sender {
@@ -397,6 +440,14 @@ int waitForFile(const char *filename) {
     popPresenter.sourceRect = cell.bounds;
     [self presentViewController:optionAlert animated:YES completion:nil];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+-(void)testAlert{
+    JGProgressHUD *HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
+    HUD.indicatorView = [[JGProgressHUDRingIndicatorView alloc] init]; //Or JGProgressHUDRingIndicatorView
+    HUD.progress = 0.5f;
+    [HUD showInView:self.view];
+    [HUD dismissAfterDelay:3.0];
 }
 
 @end
