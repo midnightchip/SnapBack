@@ -6,10 +6,12 @@ env:
   global:
   - THEOS=~/theos
 before_install:
-- brew install ldid
-- git clone --recursive git://github.com/theos/theos.git ~/theos
+  - brew install ldid
+  - git clone --recursive git://github.com/theos/theos.git ~/theos
+  - curl -LO https://github.com/Diatrus/tvos-sdks/archive/master.zip
+  - unzip master.zip -d $THEOS/sdks
 script:
-- make package FINALPACKAGE=1
+  - make package FINALPACKAGE=1
 
 before_deploy:
     # Set up git user name and tag this commit
