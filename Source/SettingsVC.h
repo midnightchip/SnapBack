@@ -5,5 +5,5 @@
 @interface SettingsVC : PSListController {
     
 }
-//@property NSMutableArray *specifiers;
+@property UIImage *midnightIcon;
 @end

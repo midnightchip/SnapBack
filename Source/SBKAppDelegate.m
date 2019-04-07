@@ -3,9 +3,16 @@
 #import "SBKVarVC.h"
 #import "SettingsVC.h"
 
+
+@interface UINavigationBar (iOS11)
+@property (nonatomic, readwrite) BOOL prefersLargeTitles;
+@end
+
+
 @implementation SBKAppDelegate
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
+
 	UITabBarController *tabBars = [[UITabBarController alloc] init];
     NSMutableArray *localViewControllersArray = [[NSMutableArray alloc] initWithCapacity:1];
 	_window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -19,8 +26,11 @@
 	[localViewControllersArray addObject:_VarVC];
 
 	_SettingsVC = [[UINavigationController alloc] initWithRootViewController:[[SettingsVC alloc] init]];
-	_SettingsVC.tabBarItem.image=[UIImage imageNamed:@"mem.png"];
+	_SettingsVC.tabBarItem.image=[UIImage imageNamed:@"settings.png"];
 	_SettingsVC.tabBarItem.title = @"Settings";
+	if (@available(iOS 11, tvOS 11, *)) {
+		_SettingsVC.navigationBar.prefersLargeTitles = UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad ? YES : NO;
+	}
 	[localViewControllersArray addObject:_SettingsVC];
 
 	tabBars.viewControllers = localViewControllersArray;

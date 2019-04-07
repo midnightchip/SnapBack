@@ -8,6 +8,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
     
     if (@available(iOS 11.0, *)) {
         self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
@@ -15,42 +16,8 @@
     
     self.view.tintColor = [UIApplication sharedApplication].delegate.window.tintColor;
     [[self navigationItem] setTitle:@"Settings"];
-}
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    // Reload Apple ID stuff
-    //[self updateSpecifiersForAppleID:[RPVResources getUsername]];
-}
-
-/*- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return 2;
-}*/
-
--(NSMutableArray *)specifiers {
-    if (!_specifiers) {
-        _specifiers = [@[[PSSpecifier preferenceSpecifierNamed:@"Some Title" target:self set:NULL get:NULL detail:Nil cell: PSTitleValueCell edit:Nil]]mutableCopy];
-    }
-    return _specifiers;
-}
-
-
-- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    //if (indexPath.section == 4 && indexPath.row < 2) {
-        static NSString *cellIdentifier = @"credits.cell";
-        
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-        if (!cell) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-        }
-        
-        cell.textLabel.text = indexPath.row == 0 ? @"MidnightChips" : @"Aesign";
-        cell.detailTextLabel.text = indexPath.row == 0 ? @"Developer" : @"Designer";
-
-            //NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: @"https://twitter.com/MidnightChip/profile_image?size=original"]];
-            //cell.imageView.image = [UIImage imageWithData: data];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    /*dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSURL *url = [NSURL URLWithString:@"https://twitter.com/MidnightChip/profile_image?size=original"];
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
         [[session dataTaskWithURL:url completionHandler :^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -61,20 +28,98 @@
             if (!image) return;
 
             dispatch_async(dispatch_get_main_queue(), ^{
-                cell.imageView.image = image;
+                self.midnightIcon = image;
             });
             }] resume];
-        });
-            cell.imageView.layer.cornerRadius = 29;
+        });*/
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    // Reload Apple ID stuff
+    //[self updateSpecifiersForAppleID:[RPVResources getUsername]];
+}
+
+-(NSMutableArray *)specifiers {
+    if (!_specifiers) {
+        //_specifiers = [@[[PSSpecifier preferenceSpecifierNamed:@"MindnightCell" target:self set:NULL get:NULL detail:Nil cell: PSTitleValueCell edit:Nil]]mutableCopy];
+        NSMutableArray *newSpecs = [NSMutableArray array];
+        [newSpecs addObjectsFromArray:[self _makeSpecifiers]];
+        _specifiers = newSpecs;
+    }
+    return _specifiers;
+}
+
+- (NSArray*)_makeSpecifiers{
+    NSMutableArray *array = [NSMutableArray array];
+    PSSpecifier *group2 = [PSSpecifier groupSpecifierWithName:@"Support"];
+    [array addObject:group2];
+    
+    PSSpecifier *showInfoAlerts = [PSSpecifier preferenceSpecifierNamed:@"MidnightTwitter" target:self set:@selector(setPreferenceValue:specifier:) get:@selector(readPreferenceValue:) detail:nil cell:PSSwitchCell edit:nil];
+    [showInfoAlerts setProperty:@"showNonUrgentAlerts" forKey:@"key"];
+    [showInfoAlerts setProperty:@0 forKey:@"default"];
+    
+    [array addObject:showInfoAlerts];
+    
+    PSSpecifier *showDebugAlerts = [PSSpecifier preferenceSpecifierNamed:@"Email" target:self set:nil get:nil detail:nil cell:PSSwitchCell edit:nil];
+    
+    [array addObject:showDebugAlerts];
+    return array;
+}
+
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        if(indexPath.row == 0){
+            static NSString *cellIdentifier = @"credits.cell";
+        
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+            if (!cell) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+            }
+        
+            cell.textLabel.text = @"MidnightChips";
+            cell.detailTextLabel.text = @"Developer";
+            cell.imageView.frame = CGRectMake(cell.imageView.frame.origin.x , cell.imageView.frame.origin.y,  40, 40);
+
+            //NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: @"https://twitter.com/MidnightChip/profile_image?size=original"]];
+            //cell.imageView.image = [UIImage imageWithData: data];
+        
+            cell.imageView.layer.cornerRadius = 14.5;
             cell.imageView.clipsToBounds = YES;
 
-        //cell.imageView.image = [UIImage imageNamed:indexPath.row == 0 ? @"author" : @"designer"];
+            cell.imageView.image = self.midnightIcon;
         
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
-        return cell;
-    //} 
-    /*else {
+            return cell;
+        }
+        if(indexPath.row == 1){
+            static NSString *cellIdentifier = @"email.cell";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+            if (!cell) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+            }
+        
+            cell.textLabel.text = @"Email Me";
+            cell.detailTextLabel.text = @"midnightchips@gmail.com";
+            //cell.imageView.frame = CGRectMake(cell.imageView.frame.origin.x , cell.imageView.frame.origin.y,  40, 40);
+
+            //NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: @"https://twitter.com/MidnightChip/profile_image?size=original"]];
+            //cell.imageView.image = [UIImage imageWithData: data];
+        
+            //cell.imageView.layer.cornerRadius = 14.5;
+            //cell.imageView.clipsToBounds = YES;
+
+            //cell.imageView.image = self.midnightIcon;
+        
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+            return cell;
+        }
+        
+    } 
+    else {
         UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
         
         // Find the type of cell this is.
@@ -109,19 +154,30 @@
             cell.textLabel.textColor = [UIApplication sharedApplication].delegate.window.tintColor;
         
         return cell;
-    }*/
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return indexPath.section == 4 && indexPath.row < 2 ? 60.0 : UITableViewAutomaticDimension;
+    return indexPath.section == 0 && indexPath.row == 0 ? 60.0 : UITableViewAutomaticDimension;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 4 && indexPath.row < 2) {
+    if (indexPath.section == 0 && indexPath.row == 0) {
         // handle credits tap.
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        [self _openTwitterForUser:indexPath.row == 0 ? @"_Matchstic" : @"aesign_"];
-    } else {
+        [self _openTwitterForUser:@"MidnightChip"];
+    } 
+    if (indexPath.section == 0 && indexPath.row == 1) {
+        // handle credits tap.
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        NSString *recipients = @"mailto:midnightchips@gmail.com?subject=SnapBack";
+        NSString *body = @"&body=Enter Your Info :)";
+
+        NSString *email = [NSString stringWithFormat:@"%@%@", recipients, body];
+        email = [email stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:email]];
+    } 
+    else {
         [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     }
 }
