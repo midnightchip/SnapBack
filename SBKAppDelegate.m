@@ -1,5 +1,6 @@
 #import "SBKAppDelegate.h"
 #import "SBKRootViewController.h"
+#import "SBKVarVC.h"
 
 @implementation SBKAppDelegate
 
@@ -10,7 +11,11 @@
 	_rootViewController = [[UINavigationController alloc] initWithRootViewController:[[SBKRootViewController alloc] init]];
 	_rootViewController.tabBarItem.image=[UIImage imageNamed:@"save.png"];
 
+	_VarVC = [[UINavigationController alloc] initWithRootViewController:[[SBKVarVC alloc] init]];
+	_VarVC.tabBarItem.image=[UIImage imageNamed:@"save.png"];
+	_VarVC.tabBarItem.title = @"Var Snapshots";
 	[localViewControllersArray addObject:_rootViewController];
+	[localViewControllersArray addObject:_VarVC];
 	tabBars.viewControllers = localViewControllersArray;
 	tabBars.view.autoresizingMask=(UIViewAutoresizingFlexibleHeight);    
 	_window.rootViewController = tabBars;

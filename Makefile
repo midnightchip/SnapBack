@@ -1,8 +1,9 @@
 GO_EASY_ON_ME = 1
+#xport TARGET = iphoneos:clang:10.3:11.2
 include $(THEOS)/makefiles/common.mk
 
 APPLICATION_NAME = SnapBack
-SnapBack_FILES = main.m SBKAppDelegate.m SBKRootViewController.m UIBarButtonItem+blocks.m $(wildcard JGProgressHUD/*.m) Snappy/libsnappy.c
+SnapBack_FILES = main.m SBKAppDelegate.m SBKRootViewController.m SBKVarVC.m UIBarButtonItem+blocks.m ExternalCFuncs.m $(wildcard JGProgressHUD/*.m) Snappy/libsnappy.c
 SnapBack_FRAMEWORKS = UIKit CoreGraphics IOKit
 SnapBack_EXTRA_FRAMEWORKS = iAmGRoot
 SnapBack_CFLAGS = -fobjc-arc

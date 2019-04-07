@@ -1,8 +1,11 @@
-#import "SBKRootViewController.h"
+#import "SBKVarVC.h"
+
+//C functions
+
 
 
 // End C
-@implementation SBKRootViewController {
+@implementation SBKVarVC {
 	NSMutableArray *snapshotArray;
 }
 
@@ -48,9 +51,9 @@
     [self checkForSnapshots];
     [Authorized restore];
     if([snapshotArray count] == 1){
-        self.title = @"1 Root Snapshot";
+        self.title = @"1 Var Snapshot";
     }else{
-        self.title = [NSString stringWithFormat:@"%lu Root Snapshots", (unsigned long)[snapshotArray count]];
+        self.title = [NSString stringWithFormat:@"%lu Var Snapshots", (unsigned long)[snapshotArray count]];
     }
     [self.tableView reloadData];
     [self.tableView.refreshControl endRefreshing];
@@ -81,7 +84,7 @@
 }
 
 -(void)checkForSnapshots{
-    int rootfd         = open("/", O_RDONLY);
+    int rootfd         = open("/var", O_RDONLY);
     if (rootfd) {
         const char **snapshots      = snapshot_list(rootfd);
         if (snapshots != NULL) {
@@ -105,7 +108,7 @@
         return FALSE;
     }
     bool success     = false;
-    int rootfd         = open("/", O_RDONLY);
+    int rootfd         = open("/var", O_RDONLY);
     
     if (rootfd) {
         bool has_snapback_snapshot     = false;
@@ -150,7 +153,7 @@
 
 -(BOOL) removeSelectedSnapshot:(NSString *)snapName{
     bool success     = false;
-    int rootfd       = open("/", O_RDONLY);
+    int rootfd       = open("/var", O_RDONLY);
     const char *snapback_snapshot     = [snapName cStringUsingEncoding:NSUTF8StringEncoding];
     success = fs_snapshot_delete(rootfd, snapback_snapshot, 0);
                if (!success){
@@ -187,7 +190,7 @@
             [self.HUD dismissAfterDelay:10.0 animated:YES];
         });
     }else{
-        NSString * command = [NSString stringWithFormat:@"/sbin/mount_apfs -s %@ / /var/MobileSoftwareUpdate/mnt1", snapName];
+        NSString * command = [NSString stringWithFormat:@"/sbin/mount_apfs -s %@ /var /var/MobileSoftwareUpdate/mnt1", snapName];
         NSString * output = runCommandGivingResults(command);
         NSLog(@"SNAPBACK OUTPUT %@", output);
         //sleep(10);
@@ -200,7 +203,7 @@
 -(void)runRsync:(NSString *)snapName{
     if([[NSFileManager defaultManager] fileExistsAtPath:@"/private/var/MobileSoftwareUpdate/mnt1/sbin/launchd"]){
         //@"--dry-run",
-        NSMutableArray *rsyncArgs = [NSMutableArray arrayWithObjects:@"-vaxcH", @"--delete-after", @"--progress", @"--exclude=/Developer", @"/var/MobileSoftwareUpdate/mnt1/.", @"/", nil];
+        NSMutableArray *rsyncArgs = [NSMutableArray arrayWithObjects:@"-vaxcH", @"--delete-after", @"--progress", @"--exclude=/var/MobileSoftwareUpdate/mnt1", @"/var/MobileSoftwareUpdate/mnt1/.", @"/var", nil];
         NSTask *rsyncTask = [[NSTask alloc] init];
         [rsyncTask setLaunchPath:@"/usr/bin/rsync"];
         [rsyncTask setArguments:rsyncArgs];
@@ -291,7 +294,7 @@
 
 -(NSString *)returnFirstSnap{
     [Authorized authorizeAsRoot];
-    int rootfd = open("/", O_RDONLY);
+    int rootfd = open("/var", O_RDONLY);
     if (rootfd <= 0) return NULL;
     const char **snapshots = snapshot_list(rootfd);
     if (snapshots == NULL) return NULL;
