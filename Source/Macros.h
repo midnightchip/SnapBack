@@ -2,7 +2,7 @@
 #import <mach/error.h>
 #include <sys/stat.h>
 #include <sys/snapshot.h>
-#import "Snappy/snappy.h"
+#import "../Snappy/snappy.h"
 
 NS_INLINE NSString *runCommandGivingResults(NSString *command) {
     FILE *proc = popen(command.UTF8String, "r");

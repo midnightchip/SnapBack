@@ -3,9 +3,10 @@ GO_EASY_ON_ME = 1
 include $(THEOS)/makefiles/common.mk
 
 APPLICATION_NAME = SnapBack
-SnapBack_FILES = main.m SBKAppDelegate.m SBKRootViewController.m SBKVarVC.m UIBarButtonItem+blocks.m ExternalCFuncs.m $(wildcard JGProgressHUD/*.m) Snappy/libsnappy.c
+SnapBack_FILES =  $(wildcard Source/*.m) $(wildcard JGProgressHUD/*.m) Snappy/libsnappy.c
 SnapBack_FRAMEWORKS = UIKit CoreGraphics IOKit
 SnapBack_EXTRA_FRAMEWORKS = iAmGRoot
+SnapBack_PRIVATE_FRAMEWORKS = Preferences
 SnapBack_CFLAGS = -fobjc-arc
 SnapBack_LDFLAGS += -FFrameworks/
 SnapBack_CODESIGN_FLAGS = -Sent.xml

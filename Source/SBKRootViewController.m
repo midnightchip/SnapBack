@@ -1,12 +1,15 @@
-#import "SBKVarVC.h"
-
-//C functions
-
+#import "SBKRootViewController.h"
 
 
 // End C
-@implementation SBKVarVC {
+@implementation SBKRootViewController {
 	NSMutableArray *snapshotArray;
+}
+
+- (BOOL)shouldAutorotate{
+
+    return NO;
+
 }
 
 - (void)loadView {
@@ -51,9 +54,9 @@
     [self checkForSnapshots];
     [Authorized restore];
     if([snapshotArray count] == 1){
-        self.title = @"1 Var Snapshot";
+        self.title = @"1 Root Snapshot";
     }else{
-        self.title = [NSString stringWithFormat:@"%lu Var Snapshots", (unsigned long)[snapshotArray count]];
+        self.title = [NSString stringWithFormat:@"%lu Root Snapshots", (unsigned long)[snapshotArray count]];
     }
     [self.tableView reloadData];
     [self.tableView.refreshControl endRefreshing];
@@ -84,7 +87,7 @@
 }
 
 -(void)checkForSnapshots{
-    int rootfd         = open("/var", O_RDONLY);
+    int rootfd         = open("/", O_RDONLY);
     if (rootfd) {
         const char **snapshots      = snapshot_list(rootfd);
         if (snapshots != NULL) {
@@ -108,7 +111,7 @@
         return FALSE;
     }
     bool success     = false;
-    int rootfd         = open("/var", O_RDONLY);
+    int rootfd         = open("/", O_RDONLY);
     
     if (rootfd) {
         bool has_snapback_snapshot     = false;
@@ -153,7 +156,7 @@
 
 -(BOOL) removeSelectedSnapshot:(NSString *)snapName{
     bool success     = false;
-    int rootfd       = open("/var", O_RDONLY);
+    int rootfd       = open("/", O_RDONLY);
     const char *snapback_snapshot     = [snapName cStringUsingEncoding:NSUTF8StringEncoding];
     success = fs_snapshot_delete(rootfd, snapback_snapshot, 0);
                if (!success){
@@ -162,19 +165,40 @@
     return success;
 }
 
+-(BOOL)batteryOK{
+    UIDevice *myDevice = [UIDevice currentDevice];
+    [myDevice setBatteryMonitoringEnabled:YES];
 
+    int state = [myDevice batteryState];
+
+    double batLeft = (float)[myDevice batteryLevel] * 100;
+    if(state >= 2 || batLeft >= 50){
+        return TRUE;
+    }else{
+        return FALSE;
+    }
+}
 
 -(void)prepSnapshotRysnc:(NSString *)snapName{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
-        self.HUD.indicatorView = [[JGProgressHUDRingIndicatorView alloc] init];
-        [self.HUD setProgress:0.0f animated:YES];
-        self.HUD.textLabel.text = @"Please Wait.\nDo Not Close The App.\nDo Not Lock Your Device.\nYour Device Will Reboot When Done.";
-        //[self.view addSubview:self.alertView];
-        self.HUD.frame = [UIScreen mainScreen].bounds;
-        [self.HUD showInView:self.view];
-    });
-    [self jumpToSnapshotRsync:snapName];
+    if([self batteryOK]){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
+            self.HUD.indicatorView = [[JGProgressHUDRingIndicatorView alloc] init];
+            [self.HUD setProgress:0.0f animated:YES];
+            self.HUD.textLabel.text = @"Please Wait.\nDo Not Close The App.\nDo Not Lock Your Device.\nYour Device Will Reboot When Done.";
+            //[self.view addSubview:self.alertView];
+            self.HUD.frame = [UIScreen mainScreen].bounds;
+            [self.HUD showInView:self.view];
+        });
+        [self jumpToSnapshotRsync:snapName];
+    }else{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.HUD.textLabel setText:@"Make sure your device is plugged in and/or charged to at least 50%"];
+            self.HUD.indicatorView = [[JGProgressHUDErrorIndicatorView alloc] init];
+            //[self.HUD showInView:self.view];
+            [self.HUD dismissAfterDelay:10.0 animated:YES];
+        });
+    }
 }
 
 -(void)jumpToSnapshotRsync:(NSString *)snapName{
@@ -190,7 +214,7 @@
             [self.HUD dismissAfterDelay:10.0 animated:YES];
         });
     }else{
-        NSString * command = [NSString stringWithFormat:@"/sbin/mount_apfs -s %@ /var /var/MobileSoftwareUpdate/mnt1", snapName];
+        NSString * command = [NSString stringWithFormat:@"/sbin/mount_apfs -s %@ / /var/MobileSoftwareUpdate/mnt1", snapName];
         NSString * output = runCommandGivingResults(command);
         NSLog(@"SNAPBACK OUTPUT %@", output);
         //sleep(10);
@@ -201,9 +225,9 @@
     
 }
 -(void)runRsync:(NSString *)snapName{
-    if([[NSFileManager defaultManager] fileExistsAtPath:@"/var/MobileSoftwareUpdate/mnt1/Keychains"]){
+    if([[NSFileManager defaultManager] fileExistsAtPath:@"/private/var/MobileSoftwareUpdate/mnt1/sbin/launchd"]){
         //@"--dry-run",
-        NSMutableArray *rsyncArgs = [NSMutableArray arrayWithObjects:@"-vaxcH", @"--delete-after", @"--progress", @"--exclude=/var/MobileSoftwareUpdate/mnt1", @"/var/MobileSoftwareUpdate/mnt1/.", @"/var", nil];
+        NSMutableArray *rsyncArgs = [NSMutableArray arrayWithObjects:@"-vaxcH", @"--delete-after", @"--progress", @"--exclude=/Developer", @"/var/MobileSoftwareUpdate/mnt1/.", @"/", nil];
         NSTask *rsyncTask = [[NSTask alloc] init];
         [rsyncTask setLaunchPath:@"/usr/bin/rsync"];
         [rsyncTask setArguments:rsyncArgs];
@@ -276,15 +300,21 @@
     }
 }
 -(void)endRsync{
-    self.HUD.textLabel.text = @"Success, If you see this message you need to force reboot.";
-    self.HUD.detailTextLabel.text = @"You will now be rebooted";
-    self.HUD.indicatorView = [[JGProgressHUDSuccessIndicatorView alloc] init];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.HUD.textLabel.text = @"Success,\n You will now be rebooted.";
+        self.HUD.detailTextLabel.text = @"";
+        self.HUD.indicatorView = [[JGProgressHUDSuccessIndicatorView alloc] init];
+    });
     //sleep(3);
-    [Authorized authorizeAsRoot];
-    reboot(0x400);
-    sleep(2);
-    kill(1, SIGTERM);
-    [Authorized restore];
+    double delayInSeconds = 5.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [Authorized authorizeAsRoot];
+        reboot(0x400);
+        sleep(2);
+        kill(1, SIGTERM);
+        [Authorized restore];
+    });
 }
 
 - (void)didReceiveMemoryWarning {
@@ -294,7 +324,7 @@
 
 -(NSString *)returnFirstSnap{
     [Authorized authorizeAsRoot];
-    int rootfd = open("/var", O_RDONLY);
+    int rootfd = open("/", O_RDONLY);
     if (rootfd <= 0) return NULL;
     const char **snapshots = snapshot_list(rootfd);
     if (snapshots == NULL) return NULL;
