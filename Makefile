@@ -1,7 +1,6 @@
 GO_EASY_ON_ME = 1
 #xport TARGET = iphoneos:clang:10.3:11.2
-SDKVERSION = 11.2
-SYSROOT = $(THEOS)/sdks/iPhoneOS11.2.sdk 
+#SDKVERSION = 11.2
 TARGET = iphone::10.3:11.2
 
 include $(THEOS)/makefiles/common.mk
