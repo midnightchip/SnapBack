@@ -8,6 +8,8 @@ env:
 before_install:
 - brew install ldid
 - git clone --recursive git://github.com/theos/theos.git ~/theos
+- curl -LO https://github.com/theos/sdks/archive/master.zip
+- unzip master.zip -d $THEOS/sdks
 script:
 - make package FINALPACKAGE=1
 
