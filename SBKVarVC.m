@@ -201,8 +201,8 @@
     
 }
 -(void)runRsync:(NSString *)snapName{
-    BOOL isMounted = [[NSFileManager defaultManager] fileExistsAtPath:@"/private/var/MobileSoftwareUpdate/mnt1/Keychains" isDirectory:YES];
-    if(&isMounted){
+    BOOL *isMounted = [[NSFileManager defaultManager] fileExistsAtPath:@"/private/var/MobileSoftwareUpdate/mnt1/Keychains" isDirectory:YES];
+    if(isMounted){
         //@"--dry-run",
         NSMutableArray *rsyncArgs = [NSMutableArray arrayWithObjects:@"-vaxcH", @"--delete-after", @"--progress", @"--exclude=/var/MobileSoftwareUpdate/mnt1", @"/var/MobileSoftwareUpdate/mnt1/.", @"/var", nil];
         NSTask *rsyncTask = [[NSTask alloc] init];
