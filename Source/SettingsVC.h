@@ -6,4 +6,5 @@
     
 }
 @property UIImage *midnightIcon;
+@property PSSpecifier *twitter;
 @end

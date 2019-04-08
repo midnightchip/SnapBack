@@ -17,7 +17,7 @@
     self.view.tintColor = [UIApplication sharedApplication].delegate.window.tintColor;
     [[self navigationItem] setTitle:@"Settings"];
 
-    /*dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSURL *url = [NSURL URLWithString:@"https://twitter.com/MidnightChip/profile_image?size=original"];
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
         [[session dataTaskWithURL:url completionHandler :^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -29,9 +29,10 @@
 
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.midnightIcon = image;
+                [self reloadSpecifier:self.twitter];
             });
             }] resume];
-        });*/
+        });
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -56,15 +57,13 @@
     PSSpecifier *group2 = [PSSpecifier groupSpecifierWithName:@"Support"];
     [array addObject:group2];
     
-    PSSpecifier *showInfoAlerts = [PSSpecifier preferenceSpecifierNamed:@"MidnightTwitter" target:self set:@selector(setPreferenceValue:specifier:) get:@selector(readPreferenceValue:) detail:nil cell:PSSwitchCell edit:nil];
-    [showInfoAlerts setProperty:@"showNonUrgentAlerts" forKey:@"key"];
-    [showInfoAlerts setProperty:@0 forKey:@"default"];
+    self.twitter = [PSSpecifier preferenceSpecifierNamed:@"MidnightTwitter" target:self set:nil get:nil detail:nil cell:PSSwitchCell edit:nil];
     
-    [array addObject:showInfoAlerts];
+    [array addObject:self.twitter];
     
-    PSSpecifier *showDebugAlerts = [PSSpecifier preferenceSpecifierNamed:@"Email" target:self set:nil get:nil detail:nil cell:PSSwitchCell edit:nil];
+    PSSpecifier *Email = [PSSpecifier preferenceSpecifierNamed:@"Email" target:self set:nil get:nil detail:nil cell:PSSwitchCell edit:nil];
     
-    [array addObject:showDebugAlerts];
+    [array addObject:Email];
     return array;
 }
 
