@@ -106,10 +106,12 @@
 - (BOOL)createSnapshotIfNecessary:(NSString *)snapName {
     snapName = [snapName lowercaseString];
     snapName = [snapName stringByReplacingOccurrencesOfString:@" " withString:@"-"];
-    NSString *origSnap = [NSString stringWithCString:find_stock_snapshot() encoding:NSUTF8StringEncoding];
-    if(origSnap){
-        if([snapName isEqualToString:origSnap]){
-            return FALSE;
+    if(find_stock_snapshot()){
+        NSString *origSnap = [NSString stringWithCString:find_stock_snapshot() encoding:NSUTF8StringEncoding];
+        if(origSnap){
+            if([snapName isEqualToString:origSnap]){
+                return FALSE;
+            }
         }
     }
     bool success     = false;
@@ -399,10 +401,12 @@
                                                          }];
     
     [optionAlert addAction:snapAction];
-    NSString *origSnap = [NSString stringWithCString:find_stock_snapshot() encoding:NSUTF8StringEncoding];
-    if(origSnap){
-        if(![cell.textLabel.text isEqualToString:origSnap]){
-            [optionAlert addAction:deleteAction];
+    if(find_stock_snapshot()){
+        NSString *origSnap = [NSString stringWithCString:find_stock_snapshot() encoding:NSUTF8StringEncoding];
+        if(origSnap){
+            if(![cell.textLabel.text isEqualToString:origSnap]){
+                [optionAlert addAction:deleteAction];
+            }
         }
     }
     [optionAlert addAction:cancelAction];
