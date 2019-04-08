@@ -58,7 +58,7 @@
 }
 
 - (void)_loadURL:(NSString*)link {
-    NSURL *url = [NSURL fileURLWithPath:document];
+    NSURL *url = [NSURL fileURLWithPath:link];
     
     self.webView = [[WKWebView alloc] initWithFrame:CGRectZero];
     self.webView.navigationDelegate = self;
