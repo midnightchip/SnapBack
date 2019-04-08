@@ -28,9 +28,9 @@
 	_SettingsVC = [[UINavigationController alloc] initWithRootViewController:[[SettingsVC alloc] init]];
 	_SettingsVC.tabBarItem.image=[UIImage imageNamed:@"settings.png"];
 	_SettingsVC.tabBarItem.title = @"Info";
-	if (@available(iOS 11, tvOS 11, *)) {
+	//if (@available(iOS 11, tvOS 11, *)) {
 		_SettingsVC.navigationBar.prefersLargeTitles = UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad ? YES : NO;
-	}
+	//}
 	[localViewControllersArray addObject:_SettingsVC];
 
 	tabBars.viewControllers = localViewControllersArray;
