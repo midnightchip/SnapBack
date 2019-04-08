@@ -29,7 +29,8 @@
 
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.midnightIcon = image;
-                [self reloadSpecifier:self.twitter];
+                //[self reloadSpecifier:self.twitter];
+                [self reloadSpecifierAtIndex:0 animated:YES];
             });
             }] resume];
         });
