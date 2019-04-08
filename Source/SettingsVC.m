@@ -10,12 +10,12 @@
     [super viewDidLoad];
 
     
-    if (@available(iOS 11.0, *)) {
+    //if (@available(iOS 11.0, *)) {
         self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
-    }
+    //}
     
     self.view.tintColor = [UIApplication sharedApplication].delegate.window.tintColor;
-    [[self navigationItem] setTitle:@"Settings"];
+    [[self navigationItem] setTitle:@"Info"];
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSURL *url = [NSURL URLWithString:@"https://twitter.com/MidnightChip/profile_image?size=original"];
@@ -55,8 +55,8 @@
 
 - (NSArray*)_makeSpecifiers{
     NSMutableArray *array = [NSMutableArray array];
-    PSSpecifier *group2 = [PSSpecifier groupSpecifierWithName:@"Support"];
-    [array addObject:group2];
+    PSSpecifier *group1 = [PSSpecifier groupSpecifierWithName:@"Support"];
+    [array addObject:group1];
     
     self.twitter = [PSSpecifier preferenceSpecifierNamed:@"MidnightTwitter" target:self set:nil get:nil detail:nil cell:PSSwitchCell edit:nil];
     
@@ -65,6 +65,21 @@
     PSSpecifier *Email = [PSSpecifier preferenceSpecifierNamed:@"Email" target:self set:nil get:nil detail:nil cell:PSSwitchCell edit:nil];
     
     [array addObject:Email];
+
+    PSSpecifier *group2 = [PSSpecifier groupSpecifierWithName:@"Source and License"];
+    [array addObject:group2];
+
+    PSSpecifier *Source = [PSSpecifier preferenceSpecifierNamed:@"Source" target:self set:nil get:nil detail:nil cell:PSSwitchCell edit:nil];
+    [array addObject:Source];
+
+    /*PSSpecifier *License = [PSSpecifier preferenceSpecifierNamed:@"License" target:self set:nil get:nil detail:NSClassFromString(@"SettingsWebVC") cell:PSLinkCell edit:nil];
+    [License setProperty:@"License" forKey:@"key"];
+    [array addObject:License];*/
+
+    PSSpecifier *thirdPartyLicense = [PSSpecifier preferenceSpecifierNamed:@"Licenses" target:self set:nil get:nil detail:NSClassFromString(@"SettingsWebVC") cell:PSLinkCell edit:nil];
+    [thirdPartyLicense setProperty:@"openSourceLicenses" forKey:@"key"];
+    [array addObject:thirdPartyLicense];
+
     return array;
 }
 
