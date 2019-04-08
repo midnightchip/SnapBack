@@ -69,7 +69,8 @@
     PSSpecifier *group2 = [PSSpecifier groupSpecifierWithName:@"Source and License"];
     [array addObject:group2];
 
-    PSSpecifier *Source = [PSSpecifier preferenceSpecifierNamed:@"Source" target:self set:nil get:nil detail:nil cell:PSSwitchCell edit:nil];
+    PSSpecifier *Source = [PSSpecifier preferenceSpecifierNamed:@"Source" target:self set:nil get:nil detail:NSClassFromString(@"SettingsWebVC") cell:PSLinkCell edit:nil];
+    [Source setProperty:@"https://github.com/midnightchip/SnapBack" forKey:@"source"];
     [array addObject:Source];
 
     /*PSSpecifier *License = [PSSpecifier preferenceSpecifierNamed:@"License" target:self set:nil get:nil detail:NSClassFromString(@"SettingsWebVC") cell:PSLinkCell edit:nil];

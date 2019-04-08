@@ -57,6 +57,17 @@
     [self.view addSubview:self.webView];
 }
 
+- (void)_loadURL:(NSString*)link {
+    NSURL *url = [NSURL fileURLWithPath:document];
+    
+    self.webView = [[WKWebView alloc] initWithFrame:CGRectZero];
+    self.webView.navigationDelegate = self;
+    NSURLRequest *nsrequest=[NSURLRequest requestWithURL:url];
+    [self.webView loadRequest:nsrequest];
+    
+    [self.view addSubview:self.webView];
+}
+
 // XXX: As we are going to be presented by Preferences.framework, we have to implement a couple of shims.
 - (void)setRootController:(id)controller {}
 - (void)setParentController:(id)controller {}
@@ -70,6 +81,10 @@
         NSLog(@"loading for %@", qualifiedHTMLFile);
         
         [self _configureForDocument:qualifiedHTMLFile];
+    }
+    if ([specifier propertyForKey:@"source"]) {
+        NSString *source = [specifier propertyForKey:@"source"];
+        [self _loadURL:source];
     }
 }
 
