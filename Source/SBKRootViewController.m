@@ -107,8 +107,10 @@
     snapName = [snapName lowercaseString];
     snapName = [snapName stringByReplacingOccurrencesOfString:@" " withString:@"-"];
     NSString *origSnap = [NSString stringWithCString:find_stock_snapshot() encoding:NSUTF8StringEncoding];
-    if([snapName isEqualToString:origSnap]){
-        return FALSE;
+    if(origSnap){
+        if([snapName isEqualToString:origSnap]){
+            return FALSE;
+        }
     }
     bool success     = false;
     int rootfd         = open("/", O_RDONLY);
@@ -398,8 +400,10 @@
     
     [optionAlert addAction:snapAction];
     NSString *origSnap = [NSString stringWithCString:find_stock_snapshot() encoding:NSUTF8StringEncoding];
-    if(![cell.textLabel.text isEqualToString:origSnap]){
-        [optionAlert addAction:deleteAction];
+    if(origSnap){
+        if(![cell.textLabel.text isEqualToString:origSnap]){
+            [optionAlert addAction:deleteAction];
+        }
     }
     [optionAlert addAction:cancelAction];
     [optionAlert setModalPresentationStyle:UIModalPresentationPopover];
