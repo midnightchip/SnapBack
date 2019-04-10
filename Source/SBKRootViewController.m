@@ -30,6 +30,8 @@
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     self.tableView.dataSource = self; 
     self.tableView.delegate = self;
+    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | 
+                             UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:self.tableView];
 
 	snapshotArray = [[NSMutableArray alloc] init];

@@ -34,6 +34,8 @@
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     self.tableView.dataSource = self; 
     self.tableView.delegate = self;
+    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | 
+                             UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:self.tableView];
 
 	snapshotArray = [[NSMutableArray alloc] init];
@@ -237,7 +239,7 @@
 -(void)runRsync:(NSString *)snapName{
     if([[NSFileManager defaultManager] fileExistsAtPath:@"/var/MobileSoftwareUpdate/mnt1/Keychains"]){
         //@"--dry-run",
-        NSMutableArray *rsyncArgs = [NSMutableArray arrayWithObjects:@"-vaxcH", @"--delete-after", @"--progress", @"--exclude=/var/MobileSoftwareUpdate/mnt1", @"--exclude=/var/Keychains", @"/var/MobileSoftwareUpdate/mnt1/.", @"/var", nil];
+        NSMutableArray *rsyncArgs = [NSMutableArray arrayWithObjects:@"-vaxcH", @"--delete-after", @"--progress", @"--exclude=/var/keybags", @"--exclude=/var/installd", @"--exclude=/var/db", @"--exclude=/var/containers/Shared/SystemGroup", @"--exclude=/var/MobileSoftwareUpdate/mnt1", @"--exclude=/var/Keychains", @"--exclude=/var/containers/Data/System", @"/var/MobileSoftwareUpdate/mnt1/.", @"/var", nil];
         NSTask *rsyncTask = [[NSTask alloc] init];
         [rsyncTask setLaunchPath:@"/usr/bin/rsync"];
         [rsyncTask setArguments:rsyncArgs];
