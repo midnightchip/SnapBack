@@ -15,9 +15,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    if (@available(iOS 11.0, *)) {
+    //if (@available(iOS 11.0, *)) {
         self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
-    }
+    //}
 }
 
 - (void)didReceiveMemoryWarning {

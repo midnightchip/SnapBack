@@ -39,9 +39,9 @@
     [self.view addSubview:self.tableView];
 
 	snapshotArray = [[NSMutableArray alloc] init];
-    if (@available(iOS 11, tvOS 11, *)) {
+    //if (@available(iOS 11, tvOS 11, *)) {
 	    self.navigationController.navigationBar.prefersLargeTitles = YES;
-    }
+    //}
     self.title = @"SnapShots";
 	[[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd actionHandler:^{
         [self createSnapshotPrompt];
@@ -110,7 +110,7 @@
 }
 
 - (BOOL)createSnapshotIfNecessary:(NSString *)snapName {
-    snapName = [snapName lowercaseString];
+    //snapName = [snapName lowercaseString];
     snapName = [snapName stringByReplacingOccurrencesOfString:@" " withString:@"-"];
     if(find_stock_snapshot()){
         NSString *origSnap = [NSString stringWithCString:find_stock_snapshot() encoding:NSUTF8StringEncoding];
@@ -215,8 +215,10 @@
 
 -(void)jumpToSnapshotRsync:(NSString *)snapName{
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
-    [Authorized authorizeAsRoot];
     [self.HUD.textLabel setText:@"Mounting Snapshot"];
+    [Authorized authorizeAsRoot];
+    NSString * command = [NSString stringWithFormat:@"/sbin/mount_apfs -s %@ /var /var/MobileSoftwareUpdate/mnt1", snapName];
+    NSString * output = runCommandGivingResults(command);
     
     if([[NSFileManager defaultManager] fileExistsAtPath:@"/private/var/MobileSoftwareUpdate/mnt1/sbin/launchd"]){
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -225,9 +227,8 @@
             //[self.HUD showInView:self.view];
             [self.HUD dismissAfterDelay:10.0 animated:YES];
         });
+        [Authorized restore];
     }else{
-        NSString * command = [NSString stringWithFormat:@"/sbin/mount_apfs -s %@ /var /var/MobileSoftwareUpdate/mnt1", snapName];
-        NSString * output = runCommandGivingResults(command);
         NSLog(@"SNAPBACK OUTPUT %@", output);
         //sleep(10);
         [self runRsync:snapName];
@@ -239,7 +240,23 @@
 -(void)runRsync:(NSString *)snapName{
     if([[NSFileManager defaultManager] fileExistsAtPath:@"/var/MobileSoftwareUpdate/mnt1/Keychains"]){
         //@"--dry-run",
-        NSMutableArray *rsyncArgs = [NSMutableArray arrayWithObjects:@"-vaxcH", @"--delete-after", @"--progress", @"--exclude=/var/keybags", @"--exclude=/var/installd", @"--exclude=/var/db", @"--exclude=/var/containers/Shared/SystemGroup", @"--exclude=/var/MobileSoftwareUpdate/mnt1", @"--exclude=/var/Keychains", @"--exclude=/var/containers/Data/System", @"/var/MobileSoftwareUpdate/mnt1/.", @"/var", nil];
+        NSMutableArray *rsyncArgs = [NSMutableArray arrayWithObjects:@"-vaxcsH", @"--delete-after", @"--progress", 
+        @"--exclude=/var/mobile/Library/Calendar", @"--exclude=/var/mobile/Library/Calendar", 
+        @"--exclude=/var/mobile/Library/FrontBoard", @"--exclude=/var/mobile/Library/IdentityServices",
+        @"--exclude=/var/mobile/Library/Mail", @"--exclude=/var/mobile/Library/Mobile Documents",
+        @"--exclude=/var/mobile/Library/SyncedPreferences", @"--exclude=/var/mobile/Library/TCC",
+        @"--exclude=/var/mobile/Library/dmd", @"--exclude=/var/mobile/Library/homed",
+        @"--exclude=/var/mobile/Media/PhotoData", @"--exclude=/var/mobile/Media/iTunes_Control",
+        @"--exclude=/var/networkd", @"--exclude=/var/preferences",
+        @"--exclude=/var/wireless", @"--exclude=/var/tmp", @"--exclude=/var/root/Documents",
+        @"--exclude=/var/root//Support",
+        @"--exclude=/var/root/Library/Caches", @"--exclude=/var/root/Library/Lockdown",
+        @"--exclude=/var/mobile/Library/Caches",  @"--exclude=/var/mobile/Library/Application Support/CloudDocs", 
+        @"--exclude=/var/mobile/Library/com.apple.nsurlsessiond", @"--exclude=/var/mobile/Library/DuetExpertCenter", 
+        @"--exclude=/var/mobile/Library/VoiceShortcuts", @"--exclude=/var/MobileAsset", @"--exclude=/var/keybags", 
+        @"--exclude=/var/installd", @"--exclude=/var/db", @"--exclude=/var/containers/Shared/SystemGroup", 
+        @"--exclude=/var/MobileSoftwareUpdate/mnt1", @"--exclude=/var/Keychains", @"--exclude=/var/containers/Data/System", 
+        @"/var/MobileSoftwareUpdate/mnt1/.", @"/var", nil];
         NSTask *rsyncTask = [[NSTask alloc] init];
         [rsyncTask setLaunchPath:@"/usr/bin/rsync"];
         [rsyncTask setArguments:rsyncArgs];
@@ -254,6 +271,11 @@
                                                                         NSString *stringRead = [[NSString alloc] initWithData:dataRead encoding:NSUTF8StringEncoding];
                                                                         NSLog(@"SnapBack RSYNC %@", stringRead);
                                                                         [self.HUD.detailTextLabel setText:stringRead];
+                                                                        if(self.HUD.progress != 0.75f){
+                                                                                dispatch_async(dispatch_get_main_queue(), ^{
+                                                                                    [self.HUD setProgress:0.75f animated:YES];
+                                                                                });
+                                                                            }
                                                                         if ([stringRead containsString:@"00 files..."]) {
                                                                             if(self.HUD.progress != 0.05f){
                                                                                 dispatch_async(dispatch_get_main_queue(), ^{

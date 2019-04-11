@@ -26,9 +26,9 @@
     [super viewDidLoad];
 
     
-    if (@available(iOS 11.0, *)) {
+    //if (@available(iOS 11.0, *)) {
         self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
-    }
+    //}
     
     self.view.tintColor = [UIApplication sharedApplication].delegate.window.tintColor;
     [[self navigationItem] setTitle:@"Info"];

@@ -35,9 +35,9 @@
     [self.view addSubview:self.tableView];
 
 	snapshotArray = [[NSMutableArray alloc] init];
-    if (@available(iOS 11, tvOS 11, *)) {
+    //if (@available(iOS 11, tvOS 11, *)) {
 	    self.navigationController.navigationBar.prefersLargeTitles = YES;
-    }
+    //}
     self.title = @"SnapShots";
 	[[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd actionHandler:^{
         [self createSnapshotPrompt];
@@ -106,7 +106,7 @@
 }
 
 - (BOOL)createSnapshotIfNecessary:(NSString *)snapName {
-    snapName = [snapName lowercaseString];
+    //snapName = [snapName lowercaseString];
     snapName = [snapName stringByReplacingOccurrencesOfString:@" " withString:@"-"];
     if(find_stock_snapshot()){
         NSString *origSnap = [NSString stringWithCString:find_stock_snapshot() encoding:NSUTF8StringEncoding];
