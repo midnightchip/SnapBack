@@ -9,7 +9,7 @@ include $(THEOS)/makefiles/common.mk
 APPLICATION_NAME = SnapBack
 SnapBack_FILES =  $(wildcard Source/*.m) $(wildcard JGProgressHUD/*.m) Snappy/libsnappy.c
 SnapBack_FRAMEWORKS = UIKit CoreGraphics IOKit WebKit
-SnapBack_EXTRA_FRAMEWORKS = iAmGRoot
+SnapBack_EXTRA_FRAMEWORKS = iAmGRoot 
 SnapBack_PRIVATE_FRAMEWORKS = Preferences
 SnapBack_CFLAGS = -fobjc-arc
 SnapBack_LDFLAGS += -FFrameworks/

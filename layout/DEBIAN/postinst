@@ -3,11 +3,16 @@ echo "Killing SnapBack..."
 killall SnapBack
 wait
 echo "Setting SnapBack binary ownership..."
-echo ""
 chown 0:0 /Applications/SnapBack.app
 chown 0:0 /Applications/SnapBack.app/SnapBack
 chmod +s /Applications/SnapBack.app/SnapBack
 echo "Refreshing ui cache..."
-echo ""
+echo "Your focus determines your reality."
+echo "Special Thanks To:"
+echo "CreatureSurvive, PINPAL, the_casle,"
+echo "pwn20wnd, sbinger, Samg_Is_A_Ninja,"
+echo "Chilaxan and Easy-Z"
+echo "Without you guys, I would not be here today."
+echo "This is a new day, a new beginning."
 su -c uicache mobile
 

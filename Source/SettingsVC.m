@@ -20,18 +20,21 @@
 @end
 
 
+
+
 @implementation SettingsVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
     
-    //if (@available(iOS 11.0, *)) {
+    if (@available(iOS 11.0, *)) {
         self.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeAlways;
-    //}
+    }
     
     self.view.tintColor = [UIApplication sharedApplication].delegate.window.tintColor;
     [[self navigationItem] setTitle:@"Info"];
+    self.iconUrls = [NSMutableArray new];
     
 }
 
@@ -54,9 +57,9 @@
     PSSpecifier *group1 = [PSSpecifier groupSpecifierWithName:@"Developer"];
     [array addObject:group1];
     
-    self.twitter = [PSSpecifier preferenceSpecifierNamed:@"MidnightTwitter" target:self set:nil get:nil detail:nil cell:PSLinkCell edit:nil];
+    PSSpecifier *twitter = [PSSpecifier preferenceSpecifierNamed:@"MidnightTwitter" target:self set:nil get:nil detail:nil cell:PSLinkCell edit:nil];
     
-    [array addObject:self.twitter];
+    [array addObject:twitter];
     
     PSSpecifier *Email = [PSSpecifier preferenceSpecifierNamed:@"Email" target:self set:nil get:nil detail:nil cell:PSSwitchCell edit:nil];
     [array addObject:Email];
@@ -77,7 +80,7 @@
     [array addObject:group3];
 
     PSSpecifier *Thanks = [PSSpecifier preferenceSpecifierNamed:@"User" target:self set:nil get:nil detail:nil cell:PSSwitchCell edit:nil];
-    [array addObjectsFromArray:[NSArray arrayByRepeatingObject:Thanks times:5]];
+    [array addObjectsFromArray:[NSArray arrayByRepeatingObject:Thanks times:8]];
 
     PSSpecifier *group4 = [PSSpecifier groupSpecifierWithName:@"Source and License"];
     [array addObject:group4];
@@ -227,9 +230,9 @@
             return cell;
         }
     }
-    if (indexPath.section == 2 && indexPath.row < 5) {
+    if (indexPath.section == 2 && indexPath.row < 8) {
         if(indexPath.row == 0){
-            static NSString *cellIdentifier = @"creater.cell";
+            static NSString *cellIdentifier = @"creature.cell";
         
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
             if (!cell) {
@@ -246,7 +249,10 @@
             cell.imageView.layer.cornerRadius = 10.0;
             cell.imageView.clipsToBounds = YES;
 
-            cell.imageView.image = self.creature;
+            if(!cell.imageView.image){
+                [self getImageFromURL:@"https://twitter.com/CreatureSurvive/profile_image?size=original" withCell:cell indexPath:indexPath];
+ 
+            }
         
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
@@ -260,7 +266,7 @@
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
             }
         
-            cell.textLabel.text = @"Sbingner";
+            cell.textLabel.text = @"Sam Bingner";
             cell.detailTextLabel.text = @"Created libSnappy";
             cell.imageView.frame = CGRectMake(cell.imageView.frame.origin.x , cell.imageView.frame.origin.y,  40, 40);
 
@@ -270,7 +276,10 @@
             cell.imageView.layer.cornerRadius = 10.0;
             cell.imageView.clipsToBounds = YES;
 
-            cell.imageView.image = self.bingner;
+            if(!cell.imageView.image){
+                [self getImageFromURL:@"https://twitter.com/sbingner/profile_image?size=original" withCell:cell indexPath:indexPath];
+ 
+            }
         
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
@@ -294,7 +303,10 @@
             cell.imageView.layer.cornerRadius = 10.0;
             cell.imageView.clipsToBounds = YES;
 
-            cell.imageView.image = self.pwn;
+            if(!cell.imageView.image){
+                [self getImageFromURL:@"https://twitter.com/pwn20wnd/profile_image?size=original" withCell:cell indexPath:indexPath];
+ 
+            }
         
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
@@ -309,7 +321,7 @@
             }
         
             cell.textLabel.text = @"Samg_is_a_Ninja";
-            cell.detailTextLabel.text = @"Apfs and helped me work through problems";
+            cell.detailTextLabel.text = @"Worked through problems with me.";
             cell.imageView.frame = CGRectMake(cell.imageView.frame.origin.x , cell.imageView.frame.origin.y,  40, 40);
 
             //NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: @"https://twitter.com/MidnightChip/profile_image?size=original"]];
@@ -318,7 +330,10 @@
             cell.imageView.layer.cornerRadius = 10.0;
             cell.imageView.clipsToBounds = YES;
 
-            cell.imageView.image = self.sam;
+            if(!cell.imageView.image){
+                [self getImageFromURL:@"https://avatars0.githubusercontent.com/u/25284532?s=400&v=4" withCell:cell indexPath:indexPath];
+ 
+            }
         
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
@@ -342,7 +357,91 @@
             cell.imageView.layer.cornerRadius = 10.0;
             cell.imageView.clipsToBounds = YES;
 
-            cell.imageView.image = self.chil;
+            if(!cell.imageView.image){
+                [self getImageFromURL:@"https://twitter.com/chilaxan1/profile_image?size=original" withCell:cell indexPath:indexPath];
+ 
+            }
+        
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+            return cell;
+        }
+        if(indexPath.row == 5){
+            static NSString *cellIdentifier = @"pin.cell";
+        
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+            if (!cell) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+            }
+        
+            cell.textLabel.text = @"PINPAL";
+            cell.detailTextLabel.text = @"Made the Amazing artwork";
+            cell.imageView.frame = CGRectMake(cell.imageView.frame.origin.x , cell.imageView.frame.origin.y,  40, 40);
+
+            //NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: @"https://twitter.com/MidnightChip/profile_image?size=original"]];
+            //cell.imageView.image = [UIImage imageWithData: data];
+        
+            cell.imageView.layer.cornerRadius = 10.0;
+            cell.imageView.clipsToBounds = YES;
+
+            if(!cell.imageView.image){
+                [self getImageFromURL:@"https://twitter.com/TPinpal/profile_image?size=original" withCell:cell indexPath:indexPath];
+ 
+            }
+        
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+            return cell;
+        }
+        if(indexPath.row == 6){
+            static NSString *cellIdentifier = @"casle.cell";
+        
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+            if (!cell) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+            }
+        
+            cell.textLabel.text = @"the_casle";
+            cell.detailTextLabel.text = @"Good Friend";
+            cell.imageView.frame = CGRectMake(cell.imageView.frame.origin.x , cell.imageView.frame.origin.y,  40, 40);
+
+            //NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: @"https://twitter.com/MidnightChip/profile_image?size=original"]];
+            //cell.imageView.image = [UIImage imageWithData: data];
+        
+            cell.imageView.layer.cornerRadius = 10.0;
+            cell.imageView.clipsToBounds = YES;
+
+            if(!cell.imageView.image){
+                [self getImageFromURL:@"https://twitter.com/the_casle/profile_image?size=original" withCell:cell indexPath:indexPath];
+ 
+            }
+        
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+            return cell;
+        }
+        if(indexPath.row == 7){
+            static NSString *cellIdentifier = @"ez.cell";
+        
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+            if (!cell) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+            }
+        
+            cell.textLabel.text = @"Easy_Z";
+            cell.detailTextLabel.text = @"Support";
+            cell.imageView.frame = CGRectMake(cell.imageView.frame.origin.x , cell.imageView.frame.origin.y,  40, 40);
+
+            //NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: @"https://twitter.com/MidnightChip/profile_image?size=original"]];
+            //cell.imageView.image = [UIImage imageWithData: data];
+        
+            cell.imageView.layer.cornerRadius = 10.0;
+            cell.imageView.clipsToBounds = YES;
+
+            if(!cell.imageView.image){
+                [self getImageFromURL:@"https://twitter.com/_Easy_Z_/profile_image?size=original" withCell:cell indexPath:indexPath];
+ 
+            }
         
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
@@ -435,6 +534,41 @@
             //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.reddit.com/r/jailbreak/"]];
         }
 
+    }
+    if (indexPath.section == 2 && indexPath.row < 8) {
+        if(indexPath.row == 0){
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            [self _openTwitterForUser:@"CreatureSurvive"];
+        }
+        if(indexPath.row == 1){
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            [self _openTwitterForUser:@"sbingner"];
+        }
+        if(indexPath.row == 2){
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            [self _openTwitterForUser:@"Pwn20wnd"];
+        }   
+        if(indexPath.row == 3){
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            UIApplication *app = [UIApplication sharedApplication];
+            [app openURL:[NSURL URLWithString:@"https://github.com/samgisaninja"]];
+        }
+        if(indexPath.row == 4){
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            [self _openTwitterForUser:@"chilaxan1"];
+        }
+        if(indexPath.row == 5){
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            [self _openTwitterForUser:@"TPinpal"];
+        }
+        if(indexPath.row == 6){
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            [self _openTwitterForUser:@"the_casle"];
+        }
+        if(indexPath.row == 7){
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            [self _openTwitterForUser:@"_Easy_Z_"];
+        }
     }  
     else {
         [super tableView:tableView didSelectRowAtIndexPath:indexPath];
@@ -478,7 +612,12 @@
                 NSLog(@"%@", index);
                 //[self.tableView reloadRowsAtIndexPaths:index withRowAnimation:UITableViewRowAnimationNone];
                 //[self reloadSpecifier:self.twitter];
-                [self reloadSpecifierAtIndex:index.row animated:YES];
+                if(![self.iconUrls containsObject:link]){
+                    [self.iconUrls addObject:link];
+                    [cell setNeedsLayout];
+                    
+                }
+                
                 
                 
             });

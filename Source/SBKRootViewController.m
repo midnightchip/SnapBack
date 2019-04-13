@@ -35,12 +35,14 @@
     [self.view addSubview:self.tableView];
 
 	snapshotArray = [[NSMutableArray alloc] init];
-    //if (@available(iOS 11, tvOS 11, *)) {
+    if (@available(iOS 11, tvOS 11, *)) {
 	    self.navigationController.navigationBar.prefersLargeTitles = YES;
-    //}
+    }
     self.title = @"SnapShots";
 	[[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd actionHandler:^{
-        [self createSnapshotPrompt];
+        [MCCommands createSnapshotPrompt:@"/" WithCompletion:^(void){
+            [self refreshSnapshots];
+        }];
     }]];
     self.tableView.refreshControl = [[UIRefreshControl alloc] init];
     [self.tableView.refreshControl addTarget:self action:@selector(refreshSnapshots) forControlEvents:UIControlEventValueChanged];
@@ -63,31 +65,6 @@
     [self.tableView reloadData];
     [self.tableView.refreshControl endRefreshing];
 }
--(void)createSnapshotPrompt{
-    UIAlertController * alertController = [UIAlertController alertControllerWithTitle: @"Name"
-                                                                              message: @"Enter Snapshot Name"
-                                                                       preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        textField.placeholder = @"Snapshot Name";
-        textField.textColor = [UIColor blackColor];
-        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        textField.borderStyle = UITextBorderStyleNone;
-    }];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        NSArray * textfields = alertController.textFields;
-        UITextField * namefield = textfields[0];
-        [Authorized authorizeAsRoot];
-        [self createSnapshotIfNecessary:namefield.text];
-        [Authorized restore];
-        [self refreshSnapshots];
-        
-    }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }]];
-    [self presentViewController:alertController animated:YES completion:nil];
-}
-
 -(void)checkForSnapshots{
     int rootfd         = open("/", O_RDONLY);
     if (rootfd) {
@@ -105,88 +82,10 @@
     }
 }
 
-- (BOOL)createSnapshotIfNecessary:(NSString *)snapName {
-    //snapName = [snapName lowercaseString];
-    snapName = [snapName stringByReplacingOccurrencesOfString:@" " withString:@"-"];
-    if(find_stock_snapshot()){
-        NSString *origSnap = [NSString stringWithCString:find_stock_snapshot() encoding:NSUTF8StringEncoding];
-        if(origSnap){
-            if([snapName isEqualToString:origSnap]){
-                return FALSE;
-            }
-        }
-    }
-    bool success     = false;
-    int rootfd         = open("/", O_RDONLY);
-    
-    if (rootfd) {
-        bool has_snapback_snapshot     = false;
-        const char **snapshots             = snapshot_list(rootfd);
-        const char *snapback_snapshot     = [snapName cStringUsingEncoding:NSUTF8StringEncoding];
-        
-        if (snapshots != NULL) {
-            for (const char **snapshot = snapshots; *snapshot; snapshot++) {
-                if (strcmp(snapback_snapshot, *snapshot) == 0) {
-                    has_snapback_snapshot = true;
-                    break;
-                }
-            }
-        }
-        
-        if (!has_snapback_snapshot) {
-            success = fs_snapshot_create(rootfd, snapback_snapshot, 0);
-            
-            if (!success) {
-                NSLog(@"*** Failed to create snapshot ***");
-            }
-            
-            else{
-                success = snapshot_check(rootfd, snapback_snapshot);
-                
-                if (!success) {
-                    NSLog(@"*** Snapback Snapshot corrupt ***");
-                }
-            }
-        }
-        
-        else {
-            success = has_snapback_snapshot;
-            NSLog(@"*** Snapback Snapshot already exists ***");
-        }
-    }
-    
-    close(rootfd);
-    
-    return success;
-}
 
--(BOOL) removeSelectedSnapshot:(NSString *)snapName{
-    bool success     = false;
-    int rootfd       = open("/", O_RDONLY);
-    const char *snapback_snapshot     = [snapName cStringUsingEncoding:NSUTF8StringEncoding];
-    success = fs_snapshot_delete(rootfd, snapback_snapshot, 0);
-               if (!success){
-                   NSLog(@"Failed To Delete Snapshot");
-               }
-    return success;
-}
-
--(BOOL)batteryOK{
-    UIDevice *myDevice = [UIDevice currentDevice];
-    [myDevice setBatteryMonitoringEnabled:YES];
-
-    int state = [myDevice batteryState];
-
-    double batLeft = (float)[myDevice batteryLevel] * 100;
-    if(state >= 2 || batLeft >= 50){
-        return TRUE;
-    }else{
-        return FALSE;
-    }
-}
 
 -(void)prepSnapshotRysnc:(NSString *)snapName{
-    if([self batteryOK]){
+    if([MCCommands batteryOK]){
         dispatch_async(dispatch_get_main_queue(), ^{
             self.HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
             self.HUD.indicatorView = [[JGProgressHUDRingIndicatorView alloc] init];
@@ -390,10 +289,10 @@
                                                          }];
     UIAlertAction* deleteAction = [UIAlertAction actionWithTitle:@"Delete Snapshot" style:UIAlertActionStyleDestructive
                                                         handler:^(UIAlertAction * action) {
-                                                            [self confirmDelete:cell.textLabel.text];
-                                                            /*[self dismissViewControllerAnimated:YES completion:^{
-                                                            
-                                                            }];*/
+                                                            [MCCommands confirmDelete:cell.textLabel.text onFS:@"/" WithCompletion:^(void){
+                                                                [self refreshSnapshots];
+                                                            }];
+      
                                                         }];
     UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
                                                          handler:^(UIAlertAction * action) {
@@ -420,28 +319,6 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
--(void)confirmDelete:(NSString *)snapName{
-    NSString *deleteText = [NSString stringWithFormat: @"Are you sure you want to delete %@?", snapName];
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Warning"
-                            message:deleteText
-                           preferredStyle:UIAlertControllerStyleAlert];
-
-    UIAlertAction* deleteAction = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault
-                               handler:^(UIAlertAction * action) {
-                                    [Authorized authorizeAsRoot];
-                                    [self removeSelectedSnapshot:snapName];
-                                    [Authorized restore];
-                                    [self refreshSnapshots];
-                               }];
-    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault
-                               handler:^(UIAlertAction * action) {
-
-                               }];
-
-    [alert addAction:deleteAction];
-    [alert addAction:cancelAction];
-    [self presentViewController:alert animated:YES completion:nil];
-}
 
 -(void)confirmJump:(NSString *)snapName{
     NSString * jumpText = [NSString stringWithFormat:@"Are you sure you want to jump to %@?", snapName];
@@ -465,7 +342,7 @@
 
 -(void)testAlert{
     JGProgressHUD *HUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
-    HUD.indicatorView = [[JGProgressHUDRingIndicatorView alloc] init]; //Or JGProgressHUDRingIndicatorView
+    HUD.indicatorView = [[JGProgressHUDRingIndicatorView alloc] init]; 
     HUD.progress = 0.5f;
     [HUD showInView:self.view];
     [HUD dismissAfterDelay:3.0];

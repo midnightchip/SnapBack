@@ -6,11 +6,6 @@
 @interface SettingsVC : PSListController {
     
 }
-@property UIImage *midnightIcon;
-@property UIImage *creature;
-@property UIImage *bingner;
-@property UIImage *pwn;
-@property UIImage *sam;
-@property UIImage *chil;
-@property PSSpecifier *twitter;
+- (void)_openTwitterForUser:(NSString*)username;
+@property NSMutableArray *iconUrls;
 @end

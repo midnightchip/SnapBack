@@ -6,7 +6,7 @@
 {
   // Create a bitmap graphics context
   // This will also set it as the current context
-  UIGraphicsBeginImageContext(size);
+  UIGraphicsBeginImageContextWithOptions( size, NO, 0 );
  
   // Draw the scaled image in the current context
   [self drawInRect:CGRectMake(0, 0, size.width, size.height)];

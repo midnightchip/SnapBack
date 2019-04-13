@@ -1,12 +1,6 @@
-#import "../Frameworks/iAmGRoot.framework/Headers/iAmGRoot.h"
+#import "MCCommands.h"
 #import "UIBarButtonItem+blocks.h"
-#include <sys/mount.h>
-#include <spawn.h>
-#import <mach/error.h>
-#import "NSTask.h"
-#import "../JGProgressHUD/JGProgressHUD.h"
-#import <Foundation/Foundation.h>
-#import "Macros.h"
+
 
 
 
