@@ -1,7 +1,15 @@
 #import "SBKRootViewController.h"
 
+bool rebuildApplicationDatabases() {
 
-// End C
+    LSApplicationWorkspace* applicationWorkspace = [NSClassFromString(@"LSApplicationWorkspace") defaultWorkspace];
+    if ([applicationWorkspace _LSPrivateRebuildApplicationDatabasesForSystemApps:YES internal:YES user:NO]) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 @implementation SBKRootViewController {
 	NSMutableArray *snapshotArray;
 }
@@ -38,7 +46,7 @@
     if (@available(iOS 11, tvOS 11, *)) {
 	    self.navigationController.navigationBar.prefersLargeTitles = YES;
     }
-    self.title = @"SnapShots";
+    self.navigationItem.title = @"SnapShots";
 	[[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd actionHandler:^{
         [MCCommands createSnapshotPrompt:@"/" WithCompletion:^(void){
             [self refreshSnapshots];
@@ -58,9 +66,9 @@
     [self checkForSnapshots];
     [Authorized restore];
     if([snapshotArray count] == 1){
-        self.title = @"1 Root Snapshot";
+        self.navigationItem.title = @"1 Root Snapshot";
     }else{
-        self.title = [NSString stringWithFormat:@"%lu Root Snapshots", (unsigned long)[snapshotArray count]];
+        self.navigationItem.title = [NSString stringWithFormat:@"%lu Root Snapshots", (unsigned long)[snapshotArray count]];
     }
     [self.tableView reloadData];
     [self.tableView.refreshControl endRefreshing];
@@ -210,19 +218,29 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.navigationController setNavigationBarHidden:NO animated:YES];
         [self setTabBarVisible:YES animated:YES completion:nil];
-        self.HUD.textLabel.text = @"Success,\n You will now be rebooted.";
+        self.HUD.textLabel.text = @"Rebuilding Icon Cache";
         self.HUD.detailTextLabel.text = @"";
         self.HUD.indicatorView = [[JGProgressHUDSuccessIndicatorView alloc] init];
     });
-    double delayInSeconds = 5.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [Authorized authorizeAsRoot];
-        reboot(0x400);
-        sleep(2);
-        kill(1, SIGTERM);
-        [Authorized restore];
-    });
+    [self runUICachewithCompletion:^(void){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.HUD.textLabel.text = @"Success!\nPlease Reboot Your Device.";
+            double delayInSeconds = 5.0;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [Authorized authorizeAsRoot];
+                reboot(0x400);
+                sleep(2);
+                kill(1, SIGTERM);
+                [Authorized restore];
+            });
+        });
+    }];
+}
+
+-(void)runUICachewithCompletion:(void (^)(void))handler{
+    rebuildApplicationDatabases();
+    if(handler) handler();
 }
 
 - (void)didReceiveMemoryWarning {

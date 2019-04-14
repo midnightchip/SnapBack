@@ -1,6 +1,5 @@
 #import "SBKVarVC.h"
 
-extern int unmount(const char *target, int flags);
 
 @implementation SBKVarVC {
 	NSMutableArray *snapshotArray;
@@ -40,7 +39,7 @@ extern int unmount(const char *target, int flags);
     if (@available(iOS 11, tvOS 11, *)) {
 	    self.navigationController.navigationBar.prefersLargeTitles = YES;
     }
-    self.title = @"SnapShots";
+    self.navigationItem.title = @" Var SnapShots";
 	[[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd actionHandler:^{
         //[self runUnmount];
         [MCCommands createSnapshotPrompt:@"/var" WithCompletion:^(void){
@@ -65,9 +64,9 @@ extern int unmount(const char *target, int flags);
     [snapshotArray removeAllObjects];
     snapshotArray = [MCCommands checkForSnapshotsOnFS:@"/var"];
     if([snapshotArray count] == 1){
-        self.title = @"1 Var Snapshot";
+        self.navigationItem.title = @"1 Var Snapshot";
     }else{
-        self.title = [NSString stringWithFormat:@"%lu Var Snapshots", (unsigned long)[snapshotArray count]];
+        self.navigationItem.title = [NSString stringWithFormat:@"%lu Var Snapshots", (unsigned long)[snapshotArray count]];
     }
     [self.tableView reloadData];
     [self.tableView.refreshControl endRefreshing];

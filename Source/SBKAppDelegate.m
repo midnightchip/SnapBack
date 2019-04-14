@@ -18,15 +18,13 @@
 	_window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 	_rootViewController = [[UINavigationController alloc] initWithRootViewController:[[SBKRootViewController alloc] init]];
 	_rootViewController.tabBarItem.image=[UIImage imageNamed:@"save.png"];
+	_rootViewController.tabBarItem.title = @"Root Snapshots";
 
 	_VarVC = [[UINavigationController alloc] initWithRootViewController:[[SBKVarVC alloc] init]];
 	_VarVC.tabBarItem.image=[UIImage imageNamed:@"mem.png"];
 	NSArray *snapshotArray = [MCCommands checkForSnapshotsOnFS:@"/var"];
-    if([snapshotArray count] == 1){
-        _VarVC.tabBarItem.title = @"1 Var Snapshot";
-    }else{
-        _VarVC.tabBarItem.title = [NSString stringWithFormat:@"%lu Var Snapshots", (unsigned long)[snapshotArray count]];
-    }
+    _VarVC.tabBarItem.title = @"Var Snapshots";
+    
 	//_VarVC.tabBarItem.title = @"Var Snapshots";
 	[localViewControllersArray addObject:_rootViewController];
 	[localViewControllersArray addObject:_VarVC];

@@ -23,5 +23,21 @@
 	<true/>
 	<key>com.apple.private.vfs.snapshot</key>
 	<true/>
+	<key>com.apple.private.mobileinstall.allowedSPI</key>
+	<array>
+		<string>InstallForLaunchServices</string>
+	</array>
+	<key>com.apple.lsapplicationworkspace.rebuildappdatabases</key>
+	<true/>
+	<key>com.apple.private.MobileContainerManager.allowed</key>
+	<true/>
+	<key>com.apple.private.kernel.override-cpumon</key>
+	<true/>
+	<key>com.apple.vpn.installer_events</key>
+	<true/>
+	<key>platform-application</key>
+	<true/>
+	<key>com.apple.private.skip-library-validation</key>
+	<true/>
 </dict>
 </plist>

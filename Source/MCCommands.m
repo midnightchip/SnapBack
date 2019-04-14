@@ -34,6 +34,15 @@
 + (BOOL)createSnapshotIfNecessary:(NSString *)snapName withFS:(NSString *)fileSystem{
     //snapName = [snapName lowercaseString];
     snapName = [snapName stringByReplacingOccurrencesOfString:@" " withString:@"-"];
+    snapName = [snapName stringByReplacingOccurrencesOfString:@"/" withString:@"-"];
+    snapName = [snapName stringByReplacingOccurrencesOfString:@"(" withString:@"-"];
+    snapName = [snapName stringByReplacingOccurrencesOfString:@")" withString:@"-"];
+    snapName = [snapName stringByReplacingOccurrencesOfString:@"\\" withString:@"-"];
+    snapName = [snapName stringByReplacingOccurrencesOfString:@"$" withString:@"-"];
+    snapName = [snapName stringByReplacingOccurrencesOfString:@"%" withString:@"-"];
+    snapName = [snapName stringByReplacingOccurrencesOfString:@"*" withString:@"-"];
+    snapName = [snapName stringByReplacingOccurrencesOfString:@"[" withString:@"-"];
+    snapName = [snapName stringByReplacingOccurrencesOfString:@"]" withString:@"-"];
     if(find_stock_snapshot()){
         NSString *origSnap = [NSString stringWithCString:find_stock_snapshot() encoding:NSUTF8StringEncoding];
         if(origSnap){
