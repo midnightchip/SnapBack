@@ -80,7 +80,7 @@
     [array addObject:group3];
 
     PSSpecifier *Thanks = [PSSpecifier preferenceSpecifierNamed:@"User" target:self set:nil get:nil detail:nil cell:PSSwitchCell edit:nil];
-    [array addObjectsFromArray:[NSArray arrayByRepeatingObject:Thanks times:8]];
+    [array addObjectsFromArray:[NSArray arrayByRepeatingObject:Thanks times:9]];
 
     PSSpecifier *group4 = [PSSpecifier groupSpecifierWithName:@"Source and License"];
     [array addObject:group4];
@@ -230,7 +230,7 @@
             return cell;
         }
     }
-    if (indexPath.section == 2 && indexPath.row < 8) {
+    if (indexPath.section == 2 && indexPath.row < 9) {
         if(indexPath.row == 0){
             static NSString *cellIdentifier = @"creature.cell";
         
@@ -447,6 +447,33 @@
         
             return cell;
         }
+        if(indexPath.row == 8){
+            static NSString *cellIdentifier = @"tony.cell";
+        
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+            if (!cell) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+            }
+        
+            cell.textLabel.text = @"Tony";
+            cell.detailTextLabel.text = @"Ideas";
+            cell.imageView.frame = CGRectMake(cell.imageView.frame.origin.x , cell.imageView.frame.origin.y,  40, 40);
+
+            //NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: @"https://twitter.com/MidnightChip/profile_image?size=original"]];
+            //cell.imageView.image = [UIImage imageWithData: data];
+        
+            cell.imageView.layer.cornerRadius = 10.0;
+            cell.imageView.clipsToBounds = YES;
+
+            if(!cell.imageView.image){
+                [self getImageFromURL:@"https://twitter.com/Tonerk7/profile_image?size=original" withCell:cell indexPath:indexPath];
+ 
+            }
+        
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+            return cell;
+        }
     }
     else {
         UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
@@ -535,7 +562,7 @@
         }
 
     }
-    if (indexPath.section == 2 && indexPath.row < 8) {
+    if (indexPath.section == 2 && indexPath.row < 9) {
         if(indexPath.row == 0){
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             [self _openTwitterForUser:@"CreatureSurvive"];
@@ -568,6 +595,10 @@
         if(indexPath.row == 7){
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             [self _openTwitterForUser:@"_Easy_Z_"];
+        }
+        if(indexPath.row == 8){
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            [self _openTwitterForUser:@"Tonerk7"];
         }
     }  
     else {

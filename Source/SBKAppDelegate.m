@@ -2,7 +2,7 @@
 #import "SBKRootViewController.h"
 #import "SBKVarVC.h"
 #import "SettingsVC.h"
-
+#import "MCCommands.h"
 
 @interface UINavigationBar (iOS11)
 @property (nonatomic, readwrite) BOOL prefersLargeTitles;
@@ -21,7 +21,13 @@
 
 	_VarVC = [[UINavigationController alloc] initWithRootViewController:[[SBKVarVC alloc] init]];
 	_VarVC.tabBarItem.image=[UIImage imageNamed:@"mem.png"];
-	_VarVC.tabBarItem.title = @"Var Snapshots";
+	NSArray *snapshotArray = [MCCommands checkForSnapshotsOnFS:@"/var"];
+    if([snapshotArray count] == 1){
+        _VarVC.tabBarItem.title = @"1 Var Snapshot";
+    }else{
+        _VarVC.tabBarItem.title = [NSString stringWithFormat:@"%lu Var Snapshots", (unsigned long)[snapshotArray count]];
+    }
+	//_VarVC.tabBarItem.title = @"Var Snapshots";
 	[localViewControllersArray addObject:_rootViewController];
 	[localViewControllersArray addObject:_VarVC];
 

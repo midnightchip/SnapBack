@@ -1,5 +1,5 @@
 Architecture: iphoneos-arm
-Depends: firmware (>= 10.3.0), rsync
+Depends: firmware (>= 10.3.0), rsync, cy+cpu.arm64
 Author: MidnightChips
 Description: iOS Time Machine
 Maintainer: MidnightChips

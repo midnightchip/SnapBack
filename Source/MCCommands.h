@@ -7,6 +7,13 @@
 #import "../JGProgressHUD/JGProgressHUD.h"
 #import <Foundation/Foundation.h>
 #import "Macros.h"
+#import <objc/runtime.h>
+
+typedef enum {
+	kAdd,
+	kRemove,
+	kExists
+} prefActions;
 
 
 @interface MCCommands : NSObject
@@ -18,4 +25,12 @@
 + (NSString *)returnFirstSnapOnFS:(NSString *)fileSystem;
 + (BOOL)batteryOK;
 + (NSMutableArray *)checkForSnapshotsOnFS:(NSString *)fileSystem;
+
+//https://github.com/Tonyk7/MGSpoof/blob/master/mgspoofhelper/MGSpoofHelperPrefs.h
++(BOOL)handleAppPrefsWithAction:(int)action inKey:(NSString *)key withValue:(id)value;
++(id)retrieveObjectFromKey:(NSString *)key;
++(void)addToKey:(NSString *)key withValue:(id)value inDictKey:(NSString *)dictKey;
++(void)removeKey:(NSString *)key inDictKey:(NSString *)dictKey;
++(BOOL)prefsDict:(NSString *)targetDict containsKey:(NSString *)dictKey;
++(NSString *)prefsDict:(NSString *)targetDict valueForKey:(NSString *)key;
 @end 

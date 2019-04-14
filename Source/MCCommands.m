@@ -20,6 +20,11 @@
         [Authorized authorizeAsRoot];
         [self createSnapshotIfNecessary:namefield.text withFS:fileSystem];
         [Authorized restore];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"h:mm a, E MMM d, yyyy"];
+        NSDate *currentDate = [NSDate date];
+        NSString *dateString = [formatter stringFromDate:currentDate];
+        [MCCommands addToKey:namefield.text withValue:dateString inDictKey:fileSystem];
         if(handler) handler();    
     }]];
     [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:nil]];
@@ -114,6 +119,8 @@
     return success;
 }
 
+
+
 + (NSString *)returnFirstSnapOnFS:(NSString *)fileSystem{
     [Authorized authorizeAsRoot];
     int rootfd = open([fileSystem cStringUsingEncoding:NSUTF8StringEncoding], O_RDONLY);
@@ -162,5 +169,92 @@
     [Authorized restore];
     return snapshotArray;
 }
+
++(BOOL)handleAppPrefsWithAction:(int)action inKey:(NSString *)key withValue:(id)value {
+	NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"com.midnightchips.SnapBack"];
+	NSArray *oldArray = (NSArray *)[userDefaults objectForKey:key];
+	// if there is no array make it 
+	if (!oldArray) {
+		[userDefaults setValue:@[] forKey:key];
+		oldArray = @[];
+	}
+	NSMutableArray *tempArray = oldArray.mutableCopy;
+	// add or remove item from remove and update array in userDefaults depending on action
+	switch (action) {
+		case kAdd:
+			if ([value isKindOfClass:[NSString class]]) {
+				if (value && ![tempArray containsObject:value])
+					[tempArray addObject:value];
+			} else if (value && [value isKindOfClass:[NSArray class]]) {
+					tempArray = [tempArray arrayByAddingObjectsFromArray:value].mutableCopy;
+			}
+			break;
+		case kRemove:
+			if (value && [tempArray containsObject:value])
+				[tempArray removeObject:value];
+			break;
+		case kExists:
+			return [tempArray containsObject:value];
+	}
+	// update the array in userDefaults
+	[userDefaults setValue:tempArray forKey:key];
+	return 0;
+}
+
++(void)addToKey:(NSString *)key withValue:(id)value inDictKey:(NSString *)dictKey {
+	NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"com.midnightchips.SnapBack"];
+	NSMutableDictionary *newDict = ((NSDictionary *)[userDefaults objectForKey:dictKey]).mutableCopy;
+	if (!newDict) {
+		[userDefaults setValue:@{} forKey:dictKey];
+		newDict = @{}.mutableCopy;
+	}
+	newDict[key] = value;
+	[userDefaults setValue:newDict forKey:dictKey];
+    [userDefaults synchronize];
+}
+
++(void)removeKey:(NSString *)key inDictKey:(NSString *)dictKey {
+	NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"com.midnightchips.SnapBack"];
+	NSMutableDictionary *newDict = ((NSDictionary *)[userDefaults objectForKey:dictKey]).mutableCopy;
+	[newDict removeObjectForKey:key];
+	[userDefaults setValue:newDict forKey:dictKey];
+    [userDefaults synchronize];
+}
+
++(id)retrieveObjectFromKey:(NSString *)key {
+	NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"com.midnightchips.SnapBack"];
+	return [userDefaults objectForKey:key];
+}
+
++(NSString *)prefsDict:(NSString *)targetDict valueForKey:(NSString *)key{
+    NSMutableDictionary *newDict;
+    NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"com.midnightchips.SnapBack"];
+    if([userDefaults objectForKey:targetDict]){
+        newDict = ((NSDictionary *)[userDefaults objectForKey:targetDict]).mutableCopy;
+        if([newDict objectForKey:key]){
+            return [newDict objectForKey:key];
+        }else{
+            return @"Unknown";
+        }
+    }else{
+        return @"Unknown";
+    }
+}
+
++(BOOL)prefsDict:(NSString *)targetDict containsKey:(NSString *)dictKey{
+    NSMutableDictionary *newDict;
+    NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"com.midnightchips.SnapBack"];
+    if([userDefaults objectForKey:targetDict]){
+        newDict = ((NSDictionary *)[userDefaults objectForKey:targetDict]).mutableCopy;
+        if([newDict objectForKey:dictKey]){
+            return YES;
+        }else{
+            return NO;
+        }
+    }else{
+        return NO;
+    }
+}
+
 
 @end 

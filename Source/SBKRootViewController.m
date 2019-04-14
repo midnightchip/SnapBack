@@ -132,6 +132,8 @@
 -(void)runRsync:(NSString *)snapName{
     if([[NSFileManager defaultManager] fileExistsAtPath:@"/private/var/MobileSoftwareUpdate/mnt1/sbin/launchd"]){
         //@"--dry-run",
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+        [self setTabBarVisible:NO animated:YES completion:nil];
         NSMutableArray *rsyncArgs = [NSMutableArray arrayWithObjects:@"-vaxcH", @"--delete-after", @"--progress", @"--exclude=/Developer", @"/var/MobileSoftwareUpdate/mnt1/.", @"/", nil];
         NSTask *rsyncTask = [[NSTask alloc] init];
         [rsyncTask setLaunchPath:@"/usr/bin/rsync"];
@@ -206,11 +208,12 @@
 }
 -(void)endRsync{
     dispatch_async(dispatch_get_main_queue(), ^{
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        [self setTabBarVisible:YES animated:YES completion:nil];
         self.HUD.textLabel.text = @"Success,\n You will now be rebooted.";
         self.HUD.detailTextLabel.text = @"";
         self.HUD.indicatorView = [[JGProgressHUDSuccessIndicatorView alloc] init];
     });
-    //sleep(3);
     double delayInSeconds = 5.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -263,16 +266,17 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:simpleTableIdentifier];
     }
     
     cell.textLabel.text = [snapshotArray objectAtIndex:indexPath.row];
+    cell.detailTextLabel.text = ([MCCommands prefsDict:@"/" containsKey:[snapshotArray objectAtIndex:indexPath.row]]) ? [MCCommands prefsDict:@"/" valueForKey:[snapshotArray objectAtIndex:indexPath.row]] : @"Unknown";
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-	[snapshotArray removeObjectAtIndex:indexPath.row];
-	[tableView deleteRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationAutomatic];
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return NO;
 }
 
 #pragma mark - Table View Delegate
@@ -290,6 +294,7 @@
     UIAlertAction* deleteAction = [UIAlertAction actionWithTitle:@"Delete Snapshot" style:UIAlertActionStyleDestructive
                                                         handler:^(UIAlertAction * action) {
                                                             [MCCommands confirmDelete:cell.textLabel.text onFS:@"/" WithCompletion:^(void){
+                                                                [MCCommands removeKey:cell.textLabel.text inDictKey:@"/"];
                                                                 [self refreshSnapshots];
                                                             }];
       
@@ -338,6 +343,28 @@
     [alert addAction:jumpAction];
     [alert addAction:cancelAction];
     [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)setTabBarVisible:(BOOL)visible animated:(BOOL)animated completion:(void (^)(BOOL))completion {
+
+    // bail if the current state matches the desired state
+    if ([self tabBarIsVisible] == visible) return (completion)? completion(YES) : nil;
+
+    // get a frame calculation ready
+    CGRect frame = self.tabBarController.tabBar.frame;
+    CGFloat height = frame.size.height;
+    CGFloat offsetY = (visible)? -height : height;
+
+    // zero duration means no animation
+    CGFloat duration = (animated)? 0.3 : 0.0;
+
+    [UIView animateWithDuration:duration animations:^{
+        self.tabBarController.tabBar.frame = CGRectOffset(frame, 0, offsetY);
+    } completion:completion];
+}
+
+- (BOOL)tabBarIsVisible {
+    return self.tabBarController.tabBar.frame.origin.y < CGRectGetMaxY(self.view.frame);
 }
 
 -(void)testAlert{
