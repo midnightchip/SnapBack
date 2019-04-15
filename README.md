@@ -3,7 +3,7 @@
 
 [![forthebadge](https://forthebadge.com/images/badges/built-by-developers.svg)](https://github.com/midnightchip/SnapBack) [![forthebadge](https://forthebadge.com/images/badges/check-it-out.svg)](https://github.com/midnightchip/SnapBack) [![forthebadge](https://forthebadge.com/images/badges/gluten-free.svg)](https://github.com/midnightchip/SnapBack) [![forthebadge](https://forthebadge.com/images/badges/made-with-crayons.svg)](https://github.com/midnightchip/SnapBack)[![forthebadge](https://forthebadge.com/images/badges/reading-6th-grade-level.svg)](https://github.com/midnightchip/SnapBack) [![forthebadge](https://forthebadge.com/images/badges/powered-by-watergate.svg)](https://github.com/midnightchip/SnapBack) [![forthebadge](https://forthebadge.com/images/badges/uses-badges.svg)](https://github.com/midnightchip/SnapBack)
 
-# TimeMachine for iOS 10.3.3+
+# TimeMachine for iOS 10.3.0+ arm64 devices
 
 Disclaimer: SnapBack has been tested thoroughly, but it is still beta software, so proceed with caution. 
 
