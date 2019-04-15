@@ -51,7 +51,7 @@ Warning: Do not attempt to revert while on low memory. Make sure you have a good
 1. Install [Theos](https://github.com/theos/theos/wiki/Installation)
 2. Clone This Repository
 3. Type `make`
-4. Succeed
+4. Profit
 
 # Legal
 <body>
