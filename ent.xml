@@ -35,8 +35,6 @@
 	<true/>
 	<key>com.apple.vpn.installer_events</key>
 	<true/>
-	<key>platform-application</key>
-	<true/>
 	<key>com.apple.private.skip-library-validation</key>
 	<true/>
 </dict>
