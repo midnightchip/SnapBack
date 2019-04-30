@@ -3,8 +3,9 @@ Depends: firmware (>= 10.3.0), rsync, cy+cpu.arm64
 Author: MidnightChips
 Description: iOS Time Machine
 Maintainer: MidnightChips
-Name: SnapBack
+Name: SnapBack (BETA)
 Package: me.midnightchips.snapback
-Section: Application
-Version: 1.0.2
+Section: System
+Version: 1.0.4
+SileoDepiction: https://midnightchips.me/sileo/snapback.json
 Depiction: https://midnightchips.me/depiction/?snapback
