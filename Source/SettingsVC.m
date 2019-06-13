@@ -506,11 +506,12 @@
         }
         
         // Tint the cell if needed!
-        if (represented.cellType == PSButtonCell)
+        if (represented.cellType == PSButtonCell){
             cell.textLabel.textColor = [UIApplication sharedApplication].delegate.window.tintColor;
-        
+        }
         return cell;
     }
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -530,21 +531,21 @@
         NSString *body = @"&body=Enter Your Info :)";
 
         NSString *email = [NSString stringWithFormat:@"%@%@", recipients, body];
-        email = [email stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:email]];
+        email = [email stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:email] options:@{} completionHandler:nil];
     }
     if (indexPath.section == 1 && indexPath.row < 3) {
         if(indexPath.row == 0){
             // handle credits tap.
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://discord.gg/jb"]];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://discord.gg/jb"] options:@{} completionHandler:nil];
         }
         if(indexPath.row == 1){
             // handle credits tap.
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://discord.gg/ffYejET"]];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://discord.gg/ffYejET"] options:@{} completionHandler:nil];
         }
         if(indexPath.row == 2){
             // handle credits tap.
@@ -555,9 +556,9 @@
     
     
             if ([app canOpenURL:apollo])
-                [app openURL:apollo];
+                [app openURL:apollo options:@{} completionHandler:nil];
             else
-                [app openURL:[NSURL URLWithString:@"https://www.reddit.com/r/jailbreak/"]];
+                [app openURL:[NSURL URLWithString:@"https://www.reddit.com/r/jailbreak/"] options:@{} completionHandler:nil];
             //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.reddit.com/r/jailbreak/"]];
         }
 
@@ -578,7 +579,7 @@
         if(indexPath.row == 3){
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             UIApplication *app = [UIApplication sharedApplication];
-            [app openURL:[NSURL URLWithString:@"https://github.com/samgisaninja"]];
+            [app openURL:[NSURL URLWithString:@"https://github.com/samgisaninja"] options:@{} completionHandler:nil];
         }
         if(indexPath.row == 4){
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -615,11 +616,11 @@
     
     
     if ([app canOpenURL:twitterapp])
-        [app openURL:twitterapp];
+        [app openURL:twitterapp options:@{} completionHandler:nil];
     else if ([app canOpenURL:tweetbot])
-        [app openURL:tweetbot];
+        [app openURL:tweetbot options:@{} completionHandler:nil];
     else
-        [app openURL:twitterweb];
+        [app openURL:twitterweb options:@{} completionHandler:nil];
 }
 
 -(void)getImageFromURL:(NSString *)link withCell:(UITableViewCell *)cell indexPath:(NSIndexPath *)index{

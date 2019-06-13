@@ -22,7 +22,6 @@
 
 	_VarVC = [[UINavigationController alloc] initWithRootViewController:[[SBKVarVC alloc] init]];
 	_VarVC.tabBarItem.image=[UIImage imageNamed:@"mem.png"];
-	NSArray *snapshotArray = [MCCommands checkForSnapshotsOnFS:@"/var"];
     _VarVC.tabBarItem.title = @"Var Snapshots";
     
 	//_VarVC.tabBarItem.title = @"Var Snapshots";

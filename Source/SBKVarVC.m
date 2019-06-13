@@ -12,6 +12,13 @@
     NSLog(@"UNMOUNT STATUS: %d", success);
     [Authorized authorizeAsRoot];
 }*/
+-(void)viewDidLoad{
+    [super viewDidLoad];
+    if(![[NSUserDefaults standardUserDefaults] boolForKey:@"displayedVarWarning"]){
+       [self varAlert];
+       [[NSUserDefaults standardUserDefaults] setBool:TRUE forKey:@"displayedVarWarning"];
+    }
+}
 
 - (void)loadView {
 	[super loadView];
@@ -40,12 +47,23 @@
 	    self.navigationController.navigationBar.prefersLargeTitles = YES;
     }
     self.navigationItem.title = @" Var SnapShots";
-	[[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd actionHandler:^{
+	/*[[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd actionHandler:^{
         //[self runUnmount];
         [MCCommands createSnapshotPrompt:@"/var" WithCompletion:^(void){
             [self refreshSnapshots];
         }];
-    }]];
+    }]];*/
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd actionHandler:^{
+        //[self runUnmount];
+        [self showiCloudWarningCreation];
+    }];
+
+    UIBarButtonItem *infoButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed: @"info"] style:UIBarButtonItemStylePlain actionHandler:^{
+        [self varAlert];
+    }];
+
+    self.navigationItem.rightBarButtonItems = @[addButton, infoButton];
+        
     self.tableView.refreshControl = [[UIRefreshControl alloc] init];
     [self.tableView.refreshControl addTarget:self action:@selector(refreshSnapshots) forControlEvents:UIControlEventValueChanged];
     [self.tableView setRefreshControl:self.tableView.refreshControl];
@@ -54,11 +72,43 @@
     [self refreshSnapshots];
 }
 
+-(void)showiCloudWarningCreation{
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Warning!"
+                           message:@"You MUST disable iCloud before creating a Snapshot of Var"
+                           preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"I have disabled iCloud" style:UIAlertActionStyleDefault
+                            handler:^(UIAlertAction * action) {
+                                [MCCommands createSnapshotPrompt:@"/var" WithCompletion:^(void){
+                                    [self refreshSnapshots];
+                                }];
+                            }];
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault
+                            handler:^(UIAlertAction * action) {
+                            }];
+
+    [alert addAction:defaultAction];
+    [alert addAction:cancelAction];
+    [self presentViewController:alert animated:YES completion:nil]; 
+}
+
 /*-(void)unmountSnap{
     [Authorized authorizeAsRoot];
     umount2("/var/MobileSoftwareUpdate/mnt1", MNT_FORCE);
     [Authorized restore];
 }*/
+
+-(void)varAlert{
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Warning!"
+                           message:@"Before using Var Snapshots, please log out of iCloud. This goes for creating and restoring to Var Snapshots.\nKeep in mind that Var Snapshots are known to take up a large amount of storage as well. It is not recommended to store more than 2 Var Snapshots at a time."
+                           preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                            handler:^(UIAlertAction * action) {}];
+
+    [alert addAction:defaultAction];
+    [self presentViewController:alert animated:YES completion:nil]; 
+}
 
 -(void)refreshSnapshots{
     [snapshotArray removeAllObjects];
@@ -75,7 +125,26 @@
 
 
 
+-(void)showiCloudWarning:(NSString *)snapName{
+    NSString * jumpText = [NSString stringWithFormat:@"Final warning: You need to disable iCloud before continuing"];
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Warning"
+                           message:jumpText
+                           preferredStyle:UIAlertControllerStyleAlert];
 
+    UIAlertAction* jumpAction = [UIAlertAction actionWithTitle:@"I have Disabled iCloud" style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction * action) {
+                                   //[self showiCloudWarning:snapName];
+                                   [self prepSnapshotRysnc:snapName];
+                               }];
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Let me go do that" style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction * action) {
+
+                               }];
+
+    [alert addAction:jumpAction];
+    [alert addAction:cancelAction];
+    [self presentViewController:alert animated:YES completion:nil];
+}
 
 
 
@@ -94,12 +163,18 @@
         });
         [self jumpToSnapshotRsync:snapName];
     }else{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.HUD.textLabel setText:@"Make sure your device is plugged in and/or charged to at least 50%"];
-            self.HUD.indicatorView = [[JGProgressHUDErrorIndicatorView alloc] init];
-            //[self.HUD showInView:self.view];
-            [self.HUD dismissAfterDelay:10.0 animated:YES];
-        });
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Battery Warning"
+                           message:@"SnapBack requires your phone to be at or above 50% batter, or plugged into power.\nPlease plug your device in to continue."
+                           preferredStyle:UIAlertControllerStyleAlert];
+
+        UIAlertAction* OKAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel
+                               handler:^(UIAlertAction * action) {
+                                    
+                               }];
+
+    
+        [alert addAction:OKAction];
+        [self presentViewController:alert animated:YES completion:nil];
     }
     
 }
@@ -133,7 +208,7 @@
         [self.navigationController setNavigationBarHidden:YES animated:YES];
         [self setTabBarVisible:NO animated:YES completion:nil];
         //@"--dry-run",
-        NSMutableArray *rsyncArgs = [NSMutableArray arrayWithObjects:@"-vaxcsH", @"--delete-after", @"--progress", 
+        NSMutableArray *rsyncArgs = [NSMutableArray arrayWithObjects:@"-vaxcsH", @"--delete", @"--progress", 
         @"--exclude=/MobileSoftwareUpdate", @"--exclude=/Keychains",
         @"/var/MobileSoftwareUpdate/mnt1/.", @"/var", nil];
         NSTask *rsyncTask = [[NSTask alloc] init];
@@ -323,7 +398,8 @@
 
     UIAlertAction* jumpAction = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault
                                handler:^(UIAlertAction * action) {
-                                    [self prepSnapshotRysnc:snapName];
+                                   [self showiCloudWarning:snapName];
+                                    //[self prepSnapshotRysnc:snapName];
                                }];
     UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault
                                handler:^(UIAlertAction * action) {

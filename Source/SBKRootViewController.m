@@ -1,5 +1,6 @@
 #import "SBKRootViewController.h"
 
+
 bool rebuildApplicationDatabases() {
 
     LSApplicationWorkspace* applicationWorkspace = [NSClassFromString(@"LSApplicationWorkspace") defaultWorkspace];
@@ -18,6 +19,14 @@ bool rebuildApplicationDatabases() {
 
     return NO;
 
+}
+
+-(void)viewDidLoad{
+    [super viewDidLoad];
+    if(![[NSUserDefaults standardUserDefaults] boolForKey:@"displayedWarning"]){
+       [self varAlert];
+       [[NSUserDefaults standardUserDefaults] setBool:TRUE forKey:@"displayedWarning"];
+    } 
 }
 
 - (void)loadView {
@@ -47,17 +56,42 @@ bool rebuildApplicationDatabases() {
 	    self.navigationController.navigationBar.prefersLargeTitles = YES;
     }
     self.navigationItem.title = @"SnapShots";
-	[[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd actionHandler:^{
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd actionHandler:^{
+        //[self runUnmount];
         [MCCommands createSnapshotPrompt:@"/" WithCompletion:^(void){
             [self refreshSnapshots];
         }];
-    }]];
+    }];
+    UIBarButtonItem *infoButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed: @"info"] style:UIBarButtonItemStylePlain actionHandler:^{
+        [self varAlert];
+    }];
+    self.navigationItem.rightBarButtonItems = @[addButton, infoButton];
+
     self.tableView.refreshControl = [[UIRefreshControl alloc] init];
     [self.tableView.refreshControl addTarget:self action:@selector(refreshSnapshots) forControlEvents:UIControlEventValueChanged];
     [self.tableView setRefreshControl:self.tableView.refreshControl];
 }
+
 -(void)viewDidAppear:(BOOL)animated{
     [self refreshSnapshots];
+}
+
+-(void)varAlert{
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Warning!"
+                           message:@"While SnapBack has been tested thoroughly, the developer of this software is not responsible for anything that may happen to your device.\nBy clicking OK you understand this and will not harass the developer for any issues that may arise."
+                           preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                            handler:^(UIAlertAction * action) {}];
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault
+                            handler:^(UIAlertAction * action) {
+                                [[NSUserDefaults standardUserDefaults] setBool:FALSE forKey:@"displayedWarning"];
+                                exit(0);
+                            }];
+
+    [alert addAction:cancelAction];
+    [alert addAction:defaultAction];
+    [self presentViewController:alert animated:YES completion:nil]; 
 }
 
 -(void)refreshSnapshots{
@@ -105,12 +139,18 @@ bool rebuildApplicationDatabases() {
         });
         [self jumpToSnapshotRsync:snapName];
     }else{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.HUD.textLabel setText:@"Make sure your device is plugged in and/or charged to at least 50%"];
-            self.HUD.indicatorView = [[JGProgressHUDErrorIndicatorView alloc] init];
-            //[self.HUD showInView:self.view];
-            [self.HUD dismissAfterDelay:10.0 animated:YES];
-        });
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Battery Warning"
+                           message:@"SnapBack requires your phone to be at or above 50% batter, or plugged into power.\nPlease plug your device in to continue."
+                           preferredStyle:UIAlertControllerStyleAlert];
+
+        UIAlertAction* OKAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel
+                               handler:^(UIAlertAction * action) {
+                                    
+                               }];
+
+    
+        [alert addAction:OKAction];
+        [self presentViewController:alert animated:YES completion:nil];
     }
 }
 
@@ -142,7 +182,7 @@ bool rebuildApplicationDatabases() {
         //@"--dry-run",
         [self.navigationController setNavigationBarHidden:YES animated:YES];
         [self setTabBarVisible:NO animated:YES completion:nil];
-        NSMutableArray *rsyncArgs = [NSMutableArray arrayWithObjects:@"-vaxcH", @"--delete-after", @"--progress", @"--exclude=/Developer", @"/var/MobileSoftwareUpdate/mnt1/.", @"/", nil];
+        NSMutableArray *rsyncArgs = [NSMutableArray arrayWithObjects:@"-vaxcH", @"--delete", @"--progress", @"--exclude=/Developer", @"/var/MobileSoftwareUpdate/mnt1/.", @"/", nil];
         NSTask *rsyncTask = [[NSTask alloc] init];
         [rsyncTask setLaunchPath:@"/usr/bin/rsync"];
         [rsyncTask setArguments:rsyncArgs];
@@ -349,17 +389,35 @@ bool rebuildApplicationDatabases() {
                            message:jumpText
                            preferredStyle:UIAlertControllerStyleAlert];
 
-    UIAlertAction* jumpAction = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault
+    UIAlertAction* jumpAction = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleCancel
                                handler:^(UIAlertAction * action) {
-                                    [self prepSnapshotRysnc:snapName];
+                                   [self presentBlackWarning:snapName];
+                                    //[self prepSnapshotRysnc:snapName];
                                }];
     UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault
                                handler:^(UIAlertAction * action) {
 
                                }];
 
-    [alert addAction:jumpAction];
+    
     [alert addAction:cancelAction];
+    [alert addAction:jumpAction];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+-(void)presentBlackWarning:(NSString *)snapName{
+    NSString * jumpText = [NSString stringWithFormat:@"On completion, SnapBack may appear to have crashed and only be a black screen.\nJust hard restart your device and rejailbreak like normal, SnapBack has operated correctly."];
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Warning"
+                           message:jumpText
+                           preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction* OKAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel
+                               handler:^(UIAlertAction * action) {
+                                    [self prepSnapshotRysnc:snapName];
+                               }];
+
+    
+    [alert addAction:OKAction];
     [self presentViewController:alert animated:YES completion:nil];
 }
 

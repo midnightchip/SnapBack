@@ -14,25 +14,25 @@
         textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         textField.borderStyle = UITextBorderStyleNone;
     }];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:nil]];
     [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         NSArray * textfields = alertController.textFields;
         UITextField * namefield = textfields[0];
+        NSString *cleanString = [self returnCleanedString:namefield.text];
         [Authorized authorizeAsRoot];
-        [self createSnapshotIfNecessary:namefield.text withFS:fileSystem];
+        [self createSnapshotIfNecessary:cleanString withFS:fileSystem];
         [Authorized restore];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"h:mm a, E MMM d, yyyy"];
         NSDate *currentDate = [NSDate date];
         NSString *dateString = [formatter stringFromDate:currentDate];
-        [MCCommands addToKey:namefield.text withValue:dateString inDictKey:fileSystem];
+        [MCCommands addToKey:cleanString withValue:dateString inDictKey:fileSystem];
         if(handler) handler();    
     }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:nil]];
     [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alertController animated:YES completion:nil];
 }
 
-+ (BOOL)createSnapshotIfNecessary:(NSString *)snapName withFS:(NSString *)fileSystem{
-    //snapName = [snapName lowercaseString];
++ (NSString *)returnCleanedString:(NSString *)snapName{
     snapName = [snapName stringByReplacingOccurrencesOfString:@" " withString:@"-"];
     snapName = [snapName stringByReplacingOccurrencesOfString:@"/" withString:@"-"];
     snapName = [snapName stringByReplacingOccurrencesOfString:@"(" withString:@"-"];
@@ -43,6 +43,10 @@
     snapName = [snapName stringByReplacingOccurrencesOfString:@"*" withString:@"-"];
     snapName = [snapName stringByReplacingOccurrencesOfString:@"[" withString:@"-"];
     snapName = [snapName stringByReplacingOccurrencesOfString:@"]" withString:@"-"];
+    return snapName;
+}
+
++ (BOOL)createSnapshotIfNecessary:(NSString *)snapName withFS:(NSString *)fileSystem{
     if(find_stock_snapshot()){
         NSString *origSnap = [NSString stringWithCString:find_stock_snapshot() encoding:NSUTF8StringEncoding];
         if(origSnap){
@@ -101,7 +105,7 @@
                             message:deleteText
                            preferredStyle:UIAlertControllerStyleAlert];
 
-    UIAlertAction* deleteAction = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault
+    UIAlertAction* deleteAction = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleCancel
                                handler:^(UIAlertAction * action) {
                                     [Authorized authorizeAsRoot];
                                     [MCCommands removeSelectedSnapshot:snapName onFS:fileSystem];
@@ -112,8 +116,8 @@
     UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault
                                handler:nil];
 
-    [alert addAction:deleteAction];
     [alert addAction:cancelAction];
+    [alert addAction:deleteAction];
     [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
 }
 

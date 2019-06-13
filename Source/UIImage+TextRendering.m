@@ -20,7 +20,6 @@
     label.backgroundColor = UIColor.clearColor;
     [label setTextAlignment:NSTextAlignmentCenter];
     [label setFont:[UIFont systemFontOfSize:18]];
-    CGSize measuredSize = [str sizeWithFont:label.font];
     label.frame = CGRectMake(0, 0, 40, 40);
     return [UIImage imageFromView:label];
 }
