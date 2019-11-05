@@ -182,7 +182,7 @@ bool rebuildApplicationDatabases() {
         //@"--dry-run",
         [self.navigationController setNavigationBarHidden:YES animated:YES];
         [self setTabBarVisible:NO animated:YES completion:nil];
-        NSMutableArray *rsyncArgs = [NSMutableArray arrayWithObjects:@"-vaxcH", @"--delete", @"--progress", @"--exclude=/Developer", @"/var/MobileSoftwareUpdate/mnt1/.", @"/", nil];
+        NSMutableArray *rsyncArgs = [NSMutableArray arrayWithObjects:@"-vaxcH", @"--delete", @"--progress", @"--exclude=/Developer", @"--exclude=/usr/libexec/xpcproxy", @"/var/MobileSoftwareUpdate/mnt1/.", @"/", nil];
         NSTask *rsyncTask = [[NSTask alloc] init];
         [rsyncTask setLaunchPath:@"/usr/bin/rsync"];
         [rsyncTask setArguments:rsyncArgs];
