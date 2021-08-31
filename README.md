@@ -54,30 +54,52 @@ Warning: Do not attempt to revert while on low memory. Make sure you have a good
 4. Succeed
 
 # Legal
-<body>
-   <h2>SnapBack</h2>
-   <h3>Copyright (C) 2019  MidnightChips</h3>
-   <p>GNU Affero General Public License, Version 3</p>
-   <p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
-   <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more details.</p>
-   <p>You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a></p>
-   <h2>rsync</h2>
-   <p>Run from commandline</p>
-   <p>GNU General Public License, Version 3</p>
-   <p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
-   <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</p>
-   <p>You should have received a copy of the General Public License along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a></p>
-   <h2>libSnappy</h2>
-   <h3>Copyright (C) 2018  Sam Bingner (sbingner), All rights reserved</h3>
-   <p><a href="https://github.com/sbingner/snappy/">https://github.com/sbingner/snappy/</a></p>
-   <h2>iAmGRoot</h2>
-   <h3>Copyright © 2016 - 2019 CreatureCoding (Dana Buehre), All Rights Reserved.</h3>
-   <p><i>Any distribution of this software software must contain this copyright notice</i></p>
-   <p><a href="https://github.com/CreatureSurvive/iAmGRoot">https://github.com/CreatureSurvive/iAmGRoot</a></p>
-   <h2>Settings Idea, Reprovision</h2>
-   <h3>Copyright (C) 2018-2019 Matchstic</h3>
-   <p>GNU Affero General Public License, Version 3</p>
-   <p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
-   <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more details.</p>
-   <p>You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a></p>
-</body>
+## SnapBack
+
+### Copyright (C) 2019 MidnightChips
+
+GNU Affero General Public License, Version 3
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License along with this program. If not, see [http://www.gnu.org/licenses/](http://www.gnu.org/licenses/)
+
+## rsync
+
+Run from commandline
+
+GNU General Public License, Version 3
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the General Public License along with this program. If not, see [http://www.gnu.org/licenses/](http://www.gnu.org/licenses/)
+
+## libSnappy
+
+### Copyright (C) 2018 Sam Bingner (sbingner), All rights reserved
+
+[https://github.com/sbingner/snappy/](https://github.com/sbingner/snappy/)
+
+## iAmGRoot
+
+### Copyright © 2016 - 2019 CreatureCoding (Dana Buehre), All Rights Reserved.
+
+_Any distribution of this software software must contain this copyright notice_
+
+[https://github.com/CreatureSurvive/iAmGRoot](https://github.com/CreatureSurvive/iAmGRoot)
+
+## Settings Idea, Reprovision
+
+### Copyright (C) 2018-2019 Matchstic
+
+GNU Affero General Public License, Version 3
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License along with this program. If not, see [http://www.gnu.org/licenses/](http://www.gnu.org/licenses/)
