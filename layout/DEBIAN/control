@@ -6,7 +6,7 @@ Maintainer: MidnightChips
 Name: SnapBack
 Package: me.midnightchips.snapback
 Section: Utilities
-Version: 2.0.1
-Icon: https://midnightchips.me/packages/SnapBack/SileoIcon.png
-SileoDepiction: https://midnightchips.me/sileo/snapback.json
-Depiction: https://midnightchips.me/depiction/?snapback
+Version: 2.0.2
+Icon: https://midnightchips.me/me.midnightchips.snapback/icon.png
+SileoDepiction: https://midnightchips.me/api/modern/me.midnightchips.snapback
+Depiction: https://midnightchips.me/depictions/me.midnightchips.snapback

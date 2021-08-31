@@ -14,8 +14,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)authorizedBlock:(void (^)(void (^_Nonnull)(void)))block;
 
++ (NSNumber *)user;
++ (NSNumber *)group;
+
++ (bool)isLocked;
++ (void)setLocked:(bool)locked;
+
 + (void)authorizeAsUser:(int)user group:(int)group;
 + (void)authorizeAsRoot;
++ (void)authorizeAsMobile;
 + (void)restore;
 
 @end
